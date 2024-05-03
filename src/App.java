@@ -32,6 +32,7 @@ public class App {
         colourMode.setBorderPainted(false);
         colourMode.setFocusPainted(false);
 
+        //jane mark
 
         menu.add(textMode);
         textMode.setBounds(515, 435, 250, 50);
