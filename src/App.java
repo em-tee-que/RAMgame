@@ -22,11 +22,11 @@ public class App {
         ImageIcon imageIcon = new ImageIcon("src/images/placeholdertitle.png");
         picture.setIcon(imageIcon);
         menu.add(picture);
-        picture.setBounds(100, 100, 1000, 250);
+        picture.setBounds(100, 100, 1000, 200);
         picture.setVisible(true);
 
         menu.add(colourMode);
-        colourMode.setBounds(515, 310, 250, 50);
+        colourMode.setBounds(515, 360, 250, 50);
         colourMode.setBackground(new java.awt.Color(255, 254, 203));
         colourMode.setOpaque(true);
         colourMode.setBorderPainted(false);
@@ -34,14 +34,14 @@ public class App {
 
 
         menu.add(textMode);
-        textMode.setBounds(515, 385, 250, 50);
+        textMode.setBounds(515, 435, 250, 50);
         textMode.setBackground(new java.awt.Color(255, 254, 203));
         textMode.setOpaque(true);
         textMode.setBorderPainted(false);
         textMode.setFocusPainted(false);
 
         menu.add(settings);
-        settings.setBounds(515, 460, 250, 50);
+        settings.setBounds(515, 510, 250, 50);
         settings.setBackground(new java.awt.Color(255, 254, 203));
         settings.setOpaque(true);
         settings.setBorderPainted(false);
