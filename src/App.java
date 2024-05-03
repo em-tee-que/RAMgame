@@ -1,7 +1,10 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
-import java.awt.Component;
+import java.awt.event.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,8 +34,12 @@ public class App {
         colourMode.setOpaque(true);
         colourMode.setBorderPainted(false);
         colourMode.setFocusPainted(false);
-
-        //jane mark
+        colourMode.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                Game g = new Game();
+                g.Game();
+            }
+        });
 
         menu.add(textMode);
         textMode.setBounds(515, 435, 250, 50);
