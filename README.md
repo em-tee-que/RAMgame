@@ -10,9 +10,16 @@ a Really Awesome Memory game!
 
 ### recent update(s)
 
-#### 5/1/2024
+#### 5/7/2024
 
-- made project
+- welcome message and replay system
+- player answer system works, so the game is now fully functional
+
+#### 5/6/2024
+
+- made the game window "colourWindow" run the game
+  - more importantly, the game exists now
+- different classes (based on the abstract class "ColourScheme") can be created to define new colour schemes
 
 ### folder structure
 
