@@ -1,8 +1,5 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 
 import java.awt.event.*;
 
@@ -36,8 +33,13 @@ public class App {
         colourMode.setFocusPainted(false);
         colourMode.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                Game g = new Game();
-                g.Game();
+                
+                
+                
+                Game game = new Game();
+                ColourScheme myScheme = new DefaultColourScheme();
+
+                game.runGame(myScheme);
             }
         });
 
