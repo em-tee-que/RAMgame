@@ -4,5 +4,8 @@ public class DefaultColourScheme extends ColourScheme{
         colourHex2 = "#54812C";
         colourHex3 = "#498FBB";
         colourHex4 = "#AE85E6";
+
+        labelForeHex = "#BF509C";
+        labelBackHex = "#EBEE90";
     }
 }

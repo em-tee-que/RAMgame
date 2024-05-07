@@ -46,8 +46,10 @@ public class Menu {
         settings.setOpaque(true);
         settings.setBorderPainted(false);
         settings.setFocusPainted(false);
-        startGame.addActionListener(new ActionListener() {
+        settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                Settings runSettings = new Settings();
+                runSettings.runSettings();
                 menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
             }
         });

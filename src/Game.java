@@ -3,7 +3,9 @@ import java.util.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import java.awt.event.*;
 
@@ -19,6 +21,8 @@ public class Game {
     JButton butColour2;
     JButton butColour3;
     JButton butColour4;
+
+    JLabel scoreLabel;
 
     int score = 0;
 
@@ -36,6 +40,15 @@ public class Game {
         colourWindow.setSize(1280, 720);
         colourWindow.setLocationRelativeTo(null);
         colourWindow.setLayout(null);
+
+        scoreLabel = new JLabel();
+        scoreLabel.setText("Score: " + score);
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        scoreLabel.setBounds(540, 20, 200, 50);
+        scoreLabel.setOpaque(true);
+        scoreLabel.setBackground(Color.decode(scheme.labelBackHex));
+        scoreLabel.setForeground(Color.decode(scheme.labelForeHex));
+        colourWindow.getContentPane().add(scoreLabel);
 
         colourWindow.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -60,35 +73,7 @@ public class Game {
         butColour1.setVisible(false);
         butColour1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (sequence.get(answerTerm) == 1)
-                {
-                    int totalTerms = (sequence.size() - 1);
-                    if (answerTerm == totalTerms){
-                        score ++;
-                        nextRound();
-                    }
-                    else {
-                        answerTerm++;
-                    }
-                }
-                else
-                {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
-
-                    if (endChoice == JOptionPane.YES_OPTION) {
-                        playAgainFlag = true;
-                        GameStarting begin = new GameStarting();
-                        begin.beginGame();
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else if (endChoice == JOptionPane.CLOSED_OPTION) {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    answerTerm = 0;
-                }
+                checkAnswer(1);
             }
         });
 
@@ -100,38 +85,9 @@ public class Game {
         butColour2.setVisible(false);
         butColour2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (sequence.get(answerTerm) == 2)
-                {
-                    int totalTerms = (sequence.size() - 1);
-                    if (answerTerm == totalTerms){
-                        score ++;
-                        nextRound();
-                    }
-                    else {
-                        answerTerm++;
-                    }
-                }
-                else
-                {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
-
-                    if (endChoice == JOptionPane.YES_OPTION) {
-                        playAgainFlag = true; // Set the flag to true
-                        GameStarting begin = new GameStarting();
-                        begin.beginGame();
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else if (endChoice == JOptionPane.CLOSED_OPTION) {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    answerTerm = 0;
-                }
+                checkAnswer(2);
             }
         });
-
 
         butColour3 = new JButton();
         butColour3.setSize(100, 100);
@@ -141,38 +97,9 @@ public class Game {
         butColour3.setVisible(false);
         butColour3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (sequence.get(answerTerm) == 3)
-                {
-                    int totalTerms = (sequence.size() - 1);
-                    if (answerTerm == totalTerms){
-                        score ++;
-                        nextRound();
-                    }
-                    else {
-                        answerTerm++;
-                    }
-                }
-                else
-                {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
-
-                    if (endChoice == JOptionPane.YES_OPTION) {
-                        playAgainFlag = true; // Set the flag to true
-                        GameStarting begin = new GameStarting();
-                        begin.beginGame();
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else if (endChoice == JOptionPane.CLOSED_OPTION) {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    answerTerm = 0;
-                }
+                checkAnswer(3);
             }
         });
-
 
         butColour4 = new JButton();
         butColour4.setSize(100, 100);
@@ -182,38 +109,9 @@ public class Game {
         butColour4.setVisible(false);
         butColour4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (sequence.get(answerTerm) == 4)
-                {
-                    int totalTerms = (sequence.size() - 1);
-                    if (answerTerm == totalTerms){
-                        score ++;
-                        nextRound();
-                    }
-                    else {
-                        answerTerm++;
-                    }
-                }
-                else
-                {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
-
-                    if (endChoice == JOptionPane.YES_OPTION) {
-                        playAgainFlag = true; // Set the flag to true
-                        GameStarting begin = new GameStarting();
-                        begin.beginGame();
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else if (endChoice == JOptionPane.CLOSED_OPTION) {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    answerTerm = 0;
-                }
+                checkAnswer(4);
             }
         });
-
 
         colourWindow.setVisible(true);
 
@@ -281,5 +179,36 @@ public class Game {
         Timer timer = new Timer(500 ,taskPerformer);
         timer.setRepeats(true);
         timer.start();
+    }
+
+    private void checkAnswer(int buttonChosen){
+        if (sequence.get(answerTerm) == buttonChosen){
+            int totalTerms = (sequence.size() - 1);
+            if (answerTerm == totalTerms){
+                score ++;
+                scoreLabel.setText("Score: " + score);
+                nextRound();
+            }
+            else {
+                answerTerm++;
+            }
+        }
+        else {
+            int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+
+            if (endChoice == JOptionPane.YES_OPTION) {
+                playAgainFlag = true;
+                GameStarting begin = new GameStarting();
+                begin.beginGame();
+                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+            }
+            else if (endChoice == JOptionPane.CLOSED_OPTION) {
+                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+            }
+            else {
+                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+            }
+            answerTerm = 0;
+        }
     }
 }
