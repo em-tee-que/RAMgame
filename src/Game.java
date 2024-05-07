@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.util.*;
 
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -74,10 +73,10 @@ public class Game {
                 }
                 else
                 {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong lol! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
 
                     if (endChoice == JOptionPane.YES_OPTION) {
-                        playAgainFlag = true; // Set the flag to true
+                        playAgainFlag = true;
                         GameStarting begin = new GameStarting();
                         begin.beginGame();
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
@@ -86,12 +85,6 @@ public class Game {
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     else {
-                        try {
-                            Menu mainMenu = new Menu();
-                            mainMenu.mainMenu(null);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     answerTerm = 0;
@@ -120,7 +113,7 @@ public class Game {
                 }
                 else
                 {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong lol! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
 
                     if (endChoice == JOptionPane.YES_OPTION) {
                         playAgainFlag = true; // Set the flag to true
@@ -132,12 +125,6 @@ public class Game {
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     else {
-                        try {
-                            Menu mainMenu = new Menu();
-                            mainMenu.mainMenu(null);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     answerTerm = 0;
@@ -167,7 +154,7 @@ public class Game {
                 }
                 else
                 {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong lol! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
 
                     if (endChoice == JOptionPane.YES_OPTION) {
                         playAgainFlag = true; // Set the flag to true
@@ -179,12 +166,6 @@ public class Game {
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     else {
-                        try {
-                            Menu mainMenu = new Menu();
-                            mainMenu.mainMenu(null);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     answerTerm = 0;
@@ -214,7 +195,7 @@ public class Game {
                 }
                 else
                 {
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong lol! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
 
                     if (endChoice == JOptionPane.YES_OPTION) {
                         playAgainFlag = true; // Set the flag to true
@@ -226,12 +207,6 @@ public class Game {
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     else {
-                        try {
-                            Menu mainMenu = new Menu();
-                            mainMenu.mainMenu(null);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
                         colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     }
                     answerTerm = 0;
@@ -247,10 +222,10 @@ public class Game {
         sequence.add((int)(Math.random()*4 + 1));
        
         nextRound();
-       
     }
+       
 
-    private void nextRound(){
+    public void nextRound() {
         butColour1.setVisible(false);
         butColour2.setVisible(false);
         butColour3.setVisible(false);
@@ -306,6 +281,5 @@ public class Game {
         Timer timer = new Timer(500 ,taskPerformer);
         timer.setRepeats(true);
         timer.start();
-   
-    }   
+    }
 }

@@ -6,7 +6,7 @@ public class GameStarting {
 
                 if (ready == JOptionPane.YES_OPTION) {
                     Game game = new Game();
-                    ColourScheme myScheme = new DefaultColourScheme();
+                    ColourScheme myScheme = new PrimaryColourScheme();
 
                     game.runGame(myScheme);
                 }
