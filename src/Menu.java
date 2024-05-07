@@ -33,8 +33,8 @@ public class Menu {
         startGame.setFocusPainted(false);
         startGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                Settings openSettings = new Settings();
-                openSettings.settings(args);
+                GameStarting begin = new GameStarting();
+                begin.beginGame();
 
                 menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
             }
@@ -48,9 +48,6 @@ public class Menu {
         settings.setFocusPainted(false);
         startGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                GameStarting begin = new GameStarting();
-                begin.beginGame();
-
                 menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
             }
         });
