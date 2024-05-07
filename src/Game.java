@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.util.*;
 
 import javax.swing.JButton;
@@ -24,6 +25,8 @@ public class Game {
 
     JLabel scoreLabel;
 
+    JLabel promptAnswer;
+
     int score = 0;
 
     ColourScheme scheme;
@@ -43,12 +46,21 @@ public class Game {
 
         scoreLabel = new JLabel();
         scoreLabel.setText("Score: " + score);
+        scoreLabel.setFont(new Font("Serif", Font.BOLD, 15));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setBounds(540, 20, 200, 50);
         scoreLabel.setOpaque(true);
         scoreLabel.setBackground(Color.decode(scheme.labelBackHex));
         scoreLabel.setForeground(Color.decode(scheme.labelForeHex));
         colourWindow.getContentPane().add(scoreLabel);
+
+        promptAnswer = new JLabel();
+        promptAnswer.setText("What was the sequence?");
+        promptAnswer.setFont(new Font("Serif", Font.PLAIN, 30));
+        promptAnswer.setHorizontalAlignment(SwingConstants.CENTER);
+        promptAnswer.setBounds(440, 150, 400, 100);
+        promptAnswer.setVisible(false);
+        colourWindow.getContentPane().add(promptAnswer);
 
         colourWindow.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -124,6 +136,7 @@ public class Game {
        
 
     public void nextRound() {
+        promptAnswer.setVisible(false);
         butColour1.setVisible(false);
         butColour2.setVisible(false);
         butColour3.setVisible(false);
@@ -154,6 +167,7 @@ public class Game {
                     ((Timer)evt.getSource()).stop();
 
                     //make the answer button visible;
+                    promptAnswer.setVisible(true);
                     butColour1.setVisible(true);
                     butColour2.setVisible(true);
                     butColour3.setVisible(true);
