@@ -1,14 +1,14 @@
 import javax.swing.JOptionPane;
 
+import Colours.ColourScheme;
+
 public class GameStarting {
-    public void beginGame(){
+    public void beginGame(ColourScheme selectedColourScheme){
                 int ready = JOptionPane.showConfirmDialog(null, "You will be shown a sequence of colours, starting with 2 and increasing by 1 each time. Are you ready?", "...Ready For It?", JOptionPane.YES_NO_OPTION);
 
                 if (ready == JOptionPane.YES_OPTION) {
                     Game game = new Game();
-                    ColourScheme myScheme = new PrimaryColourScheme();
-
-                    game.runGame(myScheme);
+                    game.runGame(selectedColourScheme);
                 }
                 else {
                     
