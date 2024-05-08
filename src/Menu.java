@@ -1,9 +1,11 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import Colours.ColourScheme;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class Menu {
     private Menu() {}
 
     ColourScheme selectedColourScheme;
+    boolean hardMode;
 
     Clip backgroundMusic;
 
@@ -36,9 +39,11 @@ public class Menu {
         }
         return instance;
     }
-    public void mainMenu(ColourScheme scheme) throws Exception {
+
+    public void mainMenu(ColourScheme scheme, boolean isHard) throws Exception {
 
         selectedColourScheme = scheme;
+        hardMode = isHard;
         
         if (menu == null) {
             createMenu();
@@ -54,20 +59,23 @@ public class Menu {
 
     private void createMenu(){
 
+        ImageIcon img = new ImageIcon("src/Images/icon.png");
+
         menu = new JFrame("RAM (game)");
-        JButton startGame = new JButton("Play!");
-        JButton settings = new JButton("Settings");
-        JButton closeGame = new JButton("Exit");
+        JButton startGame = new JButton("<html><center>PLAY!<center></html>");
+        JButton settings = new JButton("<html><center>SETTINGS<center></html>");
+        JButton closeGame = new JButton("<html><center>EXIT<center></html>");
         JLabel picture = new JLabel();
 
         playBackgroundMusic("src/Sounds/RAMgameTheme.wav");
         isMusicPlaying = true;
 
+        menu.setIconImage(img.getImage());
         menu.setSize(1280, 720);
         menu.setLocationRelativeTo(null);
         menu.setLayout(null);
         menu.getContentPane().setBackground(Color.decode("#3B6A48"));
-        
+
         ImageIcon imageIcon = new ImageIcon("src/images/titlebanner.png");
         picture.setIcon(imageIcon);
         menu.add(picture);
@@ -76,6 +84,9 @@ public class Menu {
 
         menu.add(startGame);
         startGame.setBounds(515, 360, 250, 50);
+        startGame.setVerticalAlignment(SwingConstants.CENTER);
+        startGame.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        startGame.setForeground(Color.decode("#3B6A48"));
         startGame.setBackground(Color.decode("#CCF7B5"));
         startGame.setOpaque(true);
         startGame.setBorderPainted(false);
@@ -83,6 +94,9 @@ public class Menu {
 
         menu.add(settings);
         settings.setBounds(515, 435, 250, 50);
+        settings.setVerticalAlignment(SwingConstants.CENTER);
+        settings.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        settings.setForeground(Color.decode("#3B6A48"));
         settings.setBackground(Color.decode("#CCF7B5"));
         settings.setOpaque(true);
         settings.setBorderPainted(false);
@@ -90,6 +104,9 @@ public class Menu {
 
         menu.add(closeGame);
         closeGame.setBounds(515, 510, 250, 50);
+        closeGame.setVerticalAlignment(SwingConstants.CENTER);
+        closeGame.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        closeGame.setForeground(Color.decode("#3B6A48"));
         closeGame.setBackground(Color.decode("#CCF7B5"));
         closeGame.setOpaque(true);
         closeGame.setBorderPainted(false);
@@ -108,7 +125,12 @@ public class Menu {
         startGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 GameStarting begin = new GameStarting();
-                begin.beginGame(selectedColourScheme);
+                try {
+                    begin.beginGame(selectedColourScheme, hardMode);
+                    menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
 
                 menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
             }
@@ -116,7 +138,7 @@ public class Menu {
         settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 Settings runSettings = new Settings(Menu.this);
-                runSettings.runSettings(selectedColourScheme);
+                runSettings.runSettings(selectedColourScheme, hardMode);
                 menu.setVisible(false);
             }
         });

@@ -1,11 +1,17 @@
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import Colours.ColourScheme;
 import Colours.DefaultColourScheme;
+import Colours.DeuteranopiaColourScheme;
+import Colours.PastelColourScheme;
 import Colours.PrimaryColourScheme;
+import Colours.ProtanopiaColourScheme;
+import Colours.TritanopiaColourScheme;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -14,29 +20,35 @@ import java.awt.event.ActionListener;
 public class Settings {
 
     JFrame settings;
-    JButton saveChanges;
-    Menu menuInstance; // Instance of Menu class
+    JButton saveColour;
+    JButton saveMode;
+    Menu menuInstance;
 
     ColourScheme selectedColourScheme;
-    ColourScheme newColourScheme;
+
+    boolean hardMode;
 
     public Settings(Menu menuInstance) {
-        this.menuInstance = menuInstance; // Assign the menuInstance
+        this.menuInstance = menuInstance;
     }
 
-    public void runSettings(ColourScheme scheme) {
+    public void runSettings(ColourScheme scheme, boolean isHard) {
         selectedColourScheme = scheme;
+        hardMode = isHard;
+
+        ImageIcon img = new ImageIcon("src/Images/icon.png");
 
         settings = new JFrame("settings");
         settings.setSize(1280, 720);
         settings.setLocationRelativeTo(null);
         settings.setLayout(null);
+        settings.setIconImage(img.getImage());
 
         settings.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
-                    menuInstance.mainMenu(selectedColourScheme);
+                    menuInstance.mainMenu(selectedColourScheme, hardMode);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -50,37 +62,58 @@ public class Settings {
         schemeSelection.setBounds(0, 0, 100, 50);
         settings.getContentPane().add(schemeSelection);
 
-        String[] choices = { "Default", "Primary"};
+        String[] choices = { "Default", "Primary", "Deuteranopia", "Pastel", "Protanopia", "Tritanopia"};
 
-        JComboBox<String> comboBox = new JComboBox<String>(choices);
+        JComboBox<String> comboColour = new JComboBox<String>(choices);
 
-        comboBox.setBounds(400, 0, 100, 50);
-        comboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        comboBox.setSelectedItem(selectedColourScheme.name);
-        settings.getContentPane().add(comboBox);
+        comboColour.setBounds(400, 0, 100, 50);
+        comboColour.setAlignmentX(Component.CENTER_ALIGNMENT);
+        comboColour.setSelectedItem(selectedColourScheme.name);
+        settings.getContentPane().add(comboColour);
 
-        saveChanges = new JButton("save!");
-        saveChanges.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveColour = new JButton("save!");
+        saveColour.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        saveChanges.setBounds(700, 0, 100, 50);
-        saveChanges.addActionListener(new ActionListener() {
+        saveColour.setBounds(700, 0, 100, 50);
+        saveColour.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                System.out.println("save click");
-                System.out.println(selectedColourScheme.name);
-                if (comboBox.getSelectedItem()=="Default"){
+                if (comboColour.getSelectedItem() == "Default"){
                     selectedColourScheme = new DefaultColourScheme();
                 }
-                else
-                {
+                else if (comboColour.getSelectedItem() == "Primary") {
                     selectedColourScheme = new PrimaryColourScheme();
                 }
-                System.out.println(selectedColourScheme.name);
+                else if (comboColour.getSelectedItem() == "Deuteranopia") {
+                    selectedColourScheme = new DeuteranopiaColourScheme();
+                }
+                else if (comboColour.getSelectedItem() == "Protanopia") {
+                    selectedColourScheme = new ProtanopiaColourScheme();
+                }
+                else if (comboColour.getSelectedItem() == "Pastel") {
+                    selectedColourScheme = new PastelColourScheme();
+                }
+                else if (comboColour.getSelectedItem() == "Tritanopia") {
+                    selectedColourScheme = new TritanopiaColourScheme();
+                }
             }
         });
 
-        settings.getContentPane().add(saveChanges);
+        JCheckBox checkHard = new JCheckBox("HARD MODE >:D");
+        settings.add(checkHard);
+        checkHard.setBounds(400, 100, 100, 50);
+        checkHard.setSelected(hardMode);
 
+        saveMode = new JButton("save!");
+        saveMode.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveMode.setBounds(700, 100, 100, 50);
+        saveMode.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+            hardMode = (checkHard.isSelected());
+            }
+        });
 
+        settings.getContentPane().add(saveColour);
+        settings.getContentPane().add(saveMode);
 
         settings.setVisible(true);
 

@@ -2,10 +2,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.*;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import java.awt.event.*;
@@ -30,26 +30,37 @@ public class Game {
 
     JLabel promptAnswer;
 
+    double x;
+
     int score = 0;
 
     ColourScheme scheme;
+    boolean hardMode;
 
     List<Integer> sequence;
     Integer answerTerm;
 
-    public void runGame(ColourScheme selectedColourScheme){
+    Font customFont;
+
+    public void runGame(ColourScheme selectedColourScheme, boolean isHard){
  
         scheme = selectedColourScheme;
+        hardMode = isHard;
+
         score = 0;
+
+        ImageIcon img = new ImageIcon("src/Images/icon.png");
 
         colourWindow = new JFrame("You are playing!");
         colourWindow.setSize(1280, 720);
         colourWindow.setLocationRelativeTo(null);
         colourWindow.setLayout(null);
+        colourWindow.setIconImage(img.getImage());
+
 
         scoreLabel = new JLabel();
-        scoreLabel.setText("Score: " + score);
-        scoreLabel.setFont(new Font("Serif", Font.BOLD, 15));
+        scoreLabel.setText("SCORE: " + score);
+        //scoreLabel.setFont(customFont.deriveFont(Font.BOLD, 15f));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setBounds(540, 20, 200, 50);
         scoreLabel.setOpaque(true);
@@ -59,7 +70,7 @@ public class Game {
 
         promptAnswer = new JLabel();
         promptAnswer.setText("What was the sequence?");
-        promptAnswer.setFont(new Font("Serif", Font.PLAIN, 30));
+        promptAnswer.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         promptAnswer.setHorizontalAlignment(SwingConstants.CENTER);
         promptAnswer.setBounds(440, 150, 400, 100);
         promptAnswer.setVisible(false);
@@ -68,11 +79,10 @@ public class Game {
         colourWindow.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Check if the window is closing because the user wants to play again
-                if (!playAgainFlag) {
+                if (playAgainFlag == false) {
                     try {
                         Menu mainMenu = Menu.getInstance();
-                        mainMenu.mainMenu(scheme);
+                        mainMenu.mainMenu(scheme, isHard);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -208,8 +218,12 @@ public class Game {
                 
             }
         };
-    
-        Timer timer = new Timer(500 ,taskPerformer);
+        
+        x = 1000;
+        if (hardMode) {
+            x = (((5000) / ((2 * score) + 6.5)) + 250);
+        }
+        Timer timer = new Timer((int) x ,taskPerformer);
         timer.setRepeats(true);
         timer.start();
     }
@@ -239,23 +253,73 @@ public class Game {
             Timer delayTimer = new Timer(300, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    playAgainFlag = false;
+
                     SoundUtility beep = new SoundUtility();
                     beep.playSound(SoundUtility.Sounds.bad);
 
-                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+                    ImageIcon img = new ImageIcon("src/Images/icon.png");
 
-                    if (endChoice == JOptionPane.YES_OPTION) {
-                        playAgainFlag = true;
-                        GameStarting begin = new GameStarting();
-                        begin.beginGame(scheme);
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else if (endChoice == JOptionPane.CLOSED_OPTION) {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else {
-                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                    }
+                    JFrame gameOver = new JFrame("Oh no!");
+                    gameOver.setSize(1280, 720);
+                    gameOver.setLocationRelativeTo(null);
+                    gameOver.setLayout(null);
+                    gameOver.getContentPane().setBackground(Color.decode("#3B6A48"));
+                    gameOver.setIconImage(img.getImage());
+
+                    JLabel youLost = new JLabel();
+                    youLost.setHorizontalAlignment(SwingConstants.CENTER);
+                    youLost.setText("<html><div style='text-align: center;'>Game over!<br><br> Would you like to play again?</html>");
+                    youLost.setFont(new Font("Bahnschrift", Font.BOLD, 30));
+                    youLost.setBounds(265, 175, 750, 150);
+                    youLost .setForeground(Color.decode("#CCF7B5"));
+                    gameOver.getContentPane().add(youLost);
+
+                    JButton yes = new JButton("<html><center>YES</html></center>");
+                    gameOver.add(yes);
+                    yes.setBounds(515, 360, 250, 50);
+                    yes.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+                    yes.setForeground(Color.decode("#3B6A48"));
+                    yes.setBackground(Color.decode("#CCF7B5"));
+                    yes.setOpaque(true);
+                    yes.setBorderPainted(false);
+                    yes.setFocusPainted(false);
+            
+                    yes.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e){
+                            try {
+                                playAgainFlag = true;
+                                GameStarting begin = new GameStarting();
+                                begin.beginGame(scheme, hardMode);
+                                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                                gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
+
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    });
+
+                    JButton no = new JButton("<html><center>NO THANKS</html></center>");
+                    gameOver.add(no);
+                    no.setBounds(515, 460, 250, 50);
+                    no.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+                    no.setForeground(Color.decode("#3B6A48"));
+                    no.setBackground(Color.decode("#CCF7B5"));
+                    no.setOpaque(true);
+                    no.setBorderPainted(false);
+                    no.setFocusPainted(false);
+            
+                    no.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e){
+                            playAgainFlag = false;
+                            colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                            gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
+                        }
+                    });
+
+                    gameOver.setVisible(true);
+
                     answerTerm = 0;
                 }
             });
