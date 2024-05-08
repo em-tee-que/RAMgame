@@ -94,8 +94,6 @@ public class Game {
             }
         });
 
-        //hi
-
         butColour2 = new JButton();
         butColour2.setSize(100, 100);
         butColour2.setBackground(Color.decode(scheme.colourHex2));
