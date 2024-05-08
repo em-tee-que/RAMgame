@@ -71,7 +71,7 @@ public class Game {
                 // Check if the window is closing because the user wants to play again
                 if (!playAgainFlag) {
                     try {
-                        Menu mainMenu = new Menu();
+                        Menu mainMenu = Menu.getInstance();
                         mainMenu.mainMenu(scheme);
                     } catch (Exception e1) {
                         e1.printStackTrace();
@@ -88,6 +88,8 @@ public class Game {
         butColour1.setVisible(false);
         butColour1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                SoundUtility beep = new SoundUtility();
+                beep.playSound(SoundUtility.Sounds.colour1);
                 checkAnswer(1);
             }
         });
@@ -100,6 +102,8 @@ public class Game {
         butColour2.setVisible(false);
         butColour2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                SoundUtility beep = new SoundUtility();
+                beep.playSound(SoundUtility.Sounds.colour2);
                 checkAnswer(2);
             }
         });
@@ -112,6 +116,8 @@ public class Game {
         butColour3.setVisible(false);
         butColour3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                SoundUtility beep = new SoundUtility();
+                beep.playSound(SoundUtility.Sounds.colour3);
                 checkAnswer(3);
             }
         });
@@ -124,6 +130,8 @@ public class Game {
         butColour4.setVisible(false);
         butColour4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                SoundUtility beep = new SoundUtility();
+                beep.playSound(SoundUtility.Sounds.colour4);
                 checkAnswer(4);
             }
         });
@@ -178,12 +186,20 @@ public class Game {
                 }
 
                 if (sequence.get(colourCounter) == 1){
+                    SoundUtility beep = new SoundUtility();
+                    beep.playSound(SoundUtility.Sounds.colour1);
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex1));
                 } else if (sequence.get(colourCounter) == 2){
+                    SoundUtility beep = new SoundUtility();
+                    beep.playSound(SoundUtility.Sounds.colour2);
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex2));
                 } else if (sequence.get(colourCounter) == 3){
+                    SoundUtility beep = new SoundUtility();
+                    beep.playSound(SoundUtility.Sounds.colour3);
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex3));
                 } else {
+                    SoundUtility beep = new SoundUtility();
+                    beep.playSound(SoundUtility.Sounds.colour4);
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex4));
                 }
                 colourWindow.invalidate(); //make the colourwindow repaint to screen
@@ -203,34 +219,48 @@ public class Game {
             int totalTerms = (sequence.size() - 1);
             if (answerTerm == totalTerms){
                 score ++;
-                SoundUtility beep = new SoundUtility();
-                beep.playSound(SoundUtility.Sounds.good);
-                scoreLabel.setText("Score: " + score);
-                nextRound();
+                Timer delayTimer = new Timer(500, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.good);
+                        scoreLabel.setText("Score: " + score);
+                        nextRound();
+                    }
+                });
+                delayTimer.setRepeats(false);
+                delayTimer.start();
             }
             else {
                 answerTerm++;
             }
         }
         else {
-            SoundUtility beep = new SoundUtility();
-            beep.playSound(SoundUtility.Sounds.bad);
+            Timer delayTimer = new Timer(300, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SoundUtility beep = new SoundUtility();
+                    beep.playSound(SoundUtility.Sounds.bad);
 
-            int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
+                    int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
 
-            if (endChoice == JOptionPane.YES_OPTION) {
-                playAgainFlag = true;
-                GameStarting begin = new GameStarting();
-                begin.beginGame(scheme);
-                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-            }
-            else if (endChoice == JOptionPane.CLOSED_OPTION) {
-                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-            }
-            else {
-                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-            }
-            answerTerm = 0;
+                    if (endChoice == JOptionPane.YES_OPTION) {
+                        playAgainFlag = true;
+                        GameStarting begin = new GameStarting();
+                        begin.beginGame(scheme);
+                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                    }
+                    else if (endChoice == JOptionPane.CLOSED_OPTION) {
+                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                    }
+                    else {
+                        colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                    }
+                    answerTerm = 0;
+                }
+            });
+            delayTimer.setRepeats(false);
+            delayTimer.start();
         }
     }
 }

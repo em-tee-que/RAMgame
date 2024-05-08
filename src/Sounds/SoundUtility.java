@@ -26,7 +26,7 @@ public class SoundUtility {
     public void playSound(Sounds soundType) {
 
         int soundInt = soundType.ordinal();
-        InputStream sound = getClass().getResourceAsStream("/sounds/beep-0" + (soundInt+1) + ".wav");
+        InputStream sound = getClass().getResourceAsStream("/sounds/beep-" + (soundInt+1) + ".wav");
 
         try {
             audioStream = AudioSystem.getAudioInputStream(sound);

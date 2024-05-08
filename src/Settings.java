@@ -15,15 +15,18 @@ public class Settings {
 
     JFrame settings;
     JButton saveChanges;
+    Menu menuInstance; // Instance of Menu class
 
     ColourScheme selectedColourScheme;
     ColourScheme newColourScheme;
 
-    public void runSettings(ColourScheme scheme) {
+    public Settings(Menu menuInstance) {
+        this.menuInstance = menuInstance; // Assign the menuInstance
+    }
 
+    public void runSettings(ColourScheme scheme) {
         selectedColourScheme = scheme;
 
-            
         settings = new JFrame("settings");
         settings.setSize(1280, 720);
         settings.setLocationRelativeTo(null);
@@ -33,15 +36,13 @@ public class Settings {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
-                    System.out.println("close settings");
-                    System.out.println(selectedColourScheme.name);
-                    Menu mainMenu = new Menu();
-                    mainMenu.mainMenu(selectedColourScheme);
+                    menuInstance.mainMenu(selectedColourScheme);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+
 
         JLabel schemeSelection = new JLabel("Select colour scheme:");
         schemeSelection.setAlignmentX(Component.CENTER_ALIGNMENT);
