@@ -2,12 +2,12 @@ package Colours;
 public class DefaultColourScheme extends ColourScheme{
     public DefaultColourScheme() {
         name = "Default";
-        colourHex1 = "#C9715E";
-        colourHex2 = "#54812C";
-        colourHex3 = "#498FBB";
-        colourHex4 = "#AE85E6";
+        colourHex1 = "#FF595E";
+        colourHex2 = "#FFCA3A";
+        colourHex3 = "#8AC926";
+        colourHex4 = "#1982C4";
 
-        labelForeHex = "#BF509C";
-        labelBackHex = "#EBEE90";
+        labelForeHex = "#FFFFFF";
+        labelBackHex = "#6A4C93";
     }
 }
