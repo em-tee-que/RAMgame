@@ -1,5 +1,7 @@
+package Settings;
 public class DefaultColourScheme extends ColourScheme{
     public DefaultColourScheme() {
+        name = "Default";
         colourHex1 = "#C9715E";
         colourHex2 = "#54812C";
         colourHex3 = "#498FBB";

@@ -1,13 +1,20 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import Settings.ColourScheme;
+
 import java.awt.event.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Menu {
-    public void mainMenu(String[] args) throws Exception {
+
+    ColourScheme selectedColourScheme;
+
+    public void mainMenu(ColourScheme scheme) throws Exception {
+        selectedColourScheme = scheme;
+
         JFrame menu = new JFrame("RAM (game)");
         JButton startGame = new JButton("Play!");
         JButton settings = new JButton("Settings");
@@ -34,7 +41,7 @@ public class Menu {
         startGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 GameStarting begin = new GameStarting();
-                begin.beginGame();
+                begin.beginGame(selectedColourScheme);
 
                 menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
             }
@@ -49,7 +56,7 @@ public class Menu {
         settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 Settings runSettings = new Settings();
-                runSettings.runSettings();
+                runSettings.runSettings(selectedColourScheme);
                 menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
             }
         });

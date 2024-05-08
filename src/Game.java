@@ -12,6 +12,8 @@ import java.awt.event.*;
 
 import javax.swing.Timer;
 
+import Settings.ColourScheme;
+
 
 public class Game {
 
@@ -34,9 +36,9 @@ public class Game {
     List<Integer> sequence;
     Integer answerTerm;
 
-    public void runGame(ColourScheme myColourScheme){
+    public void runGame(ColourScheme selectedColourScheme){
  
-        scheme = myColourScheme;
+        scheme = selectedColourScheme;
         score = 0;
 
         colourWindow = new JFrame("You are playing!");
@@ -69,7 +71,7 @@ public class Game {
                 if (!playAgainFlag) {
                     try {
                         Menu mainMenu = new Menu();
-                        mainMenu.mainMenu(null);
+                        mainMenu.mainMenu(scheme);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -213,7 +215,7 @@ public class Game {
             if (endChoice == JOptionPane.YES_OPTION) {
                 playAgainFlag = true;
                 GameStarting begin = new GameStarting();
-                begin.beginGame();
+                begin.beginGame(scheme);
                 colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
             }
             else if (endChoice == JOptionPane.CLOSED_OPTION) {
