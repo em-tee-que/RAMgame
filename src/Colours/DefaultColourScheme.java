@@ -1,4 +1,4 @@
-package Settings;
+package Colours;
 public class DefaultColourScheme extends ColourScheme{
     public DefaultColourScheme() {
         name = "Default";

@@ -1,4 +1,4 @@
-import Settings.DefaultColourScheme;
+import Colours.DefaultColourScheme;
 
 public class App {
     public static void main(String[] args) throws Exception {

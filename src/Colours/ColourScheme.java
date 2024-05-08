@@ -1,4 +1,4 @@
-package Settings;
+package Colours;
 public abstract class ColourScheme {
     public String name;
     public String colourHex1;

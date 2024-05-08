@@ -12,7 +12,8 @@ import java.awt.event.*;
 
 import javax.swing.Timer;
 
-import Settings.ColourScheme;
+import Colours.ColourScheme;
+import Sounds.SoundUtility;
 
 
 public class Game {
@@ -202,6 +203,8 @@ public class Game {
             int totalTerms = (sequence.size() - 1);
             if (answerTerm == totalTerms){
                 score ++;
+                SoundUtility beep = new SoundUtility();
+                beep.playSound(SoundUtility.Sounds.good);
                 scoreLabel.setText("Score: " + score);
                 nextRound();
             }
@@ -210,6 +213,9 @@ public class Game {
             }
         }
         else {
+            SoundUtility beep = new SoundUtility();
+            beep.playSound(SoundUtility.Sounds.bad);
+
             int endChoice = JOptionPane.showConfirmDialog(null, "Wrong! Your score was " + score + ". Would you like to play again?", "You Lose!", JOptionPane.YES_NO_OPTION);
 
             if (endChoice == JOptionPane.YES_OPTION) {

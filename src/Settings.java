@@ -3,9 +3,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import Settings.ColourScheme;
-import Settings.DefaultColourScheme;
-import Settings.PrimaryColourScheme;
+import Colours.ColourScheme;
+import Colours.DefaultColourScheme;
+import Colours.PrimaryColourScheme;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

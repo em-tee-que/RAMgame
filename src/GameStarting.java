@@ -1,6 +1,6 @@
 import javax.swing.JOptionPane;
 
-import Settings.ColourScheme;
+import Colours.ColourScheme;
 
 public class GameStarting {
     public void beginGame(ColourScheme selectedColourScheme){

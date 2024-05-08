@@ -1,7 +1,7 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import Settings.ColourScheme;
+import Colours.ColourScheme;
 
 import java.awt.event.*;
 
