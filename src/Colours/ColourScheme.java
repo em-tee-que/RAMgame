@@ -9,4 +9,3 @@ public abstract class ColourScheme {
     public String labelForeHex;
     public String labelBackHex;
 }
-
