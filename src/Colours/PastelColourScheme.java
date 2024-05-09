@@ -1,6 +1,7 @@
 package Colours;
 public class PastelColourScheme extends ColourScheme{
     public PastelColourScheme() {
+        name = "Pastel";
         colourHex1 = "#FF99C8";
         colourHex2 = "#FCF6BD";
         colourHex3 = "#d0f4de";

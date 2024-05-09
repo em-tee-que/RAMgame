@@ -6,12 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import Colours.ColourScheme;
-import Colours.DefaultColourScheme;
-import Colours.DeuteranopiaColourScheme;
-import Colours.PastelColourScheme;
-import Colours.PrimaryColourScheme;
-import Colours.ProtanopiaColourScheme;
-import Colours.TritanopiaColourScheme;
+import Colours.ColourSchemeFactory;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -77,24 +72,9 @@ public class Settings {
         saveColour.setBounds(700, 0, 100, 50);
         saveColour.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (comboColour.getSelectedItem() == "Default"){
-                    selectedColourScheme = new DefaultColourScheme();
-                }
-                else if (comboColour.getSelectedItem() == "Primary") {
-                    selectedColourScheme = new PrimaryColourScheme();
-                }
-                else if (comboColour.getSelectedItem() == "Deuteranopia") {
-                    selectedColourScheme = new DeuteranopiaColourScheme();
-                }
-                else if (comboColour.getSelectedItem() == "Protanopia") {
-                    selectedColourScheme = new ProtanopiaColourScheme();
-                }
-                else if (comboColour.getSelectedItem() == "Pastel") {
-                    selectedColourScheme = new PastelColourScheme();
-                }
-                else if (comboColour.getSelectedItem() == "Tritanopia") {
-                    selectedColourScheme = new TritanopiaColourScheme();
-                }
+                String schemeName = (String) comboColour.getSelectedItem();
+                selectedColourScheme = ColourSchemeFactory.getColourScheme(schemeName);
+                
             }
         });
 
