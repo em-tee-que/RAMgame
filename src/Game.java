@@ -61,10 +61,11 @@ public class Game implements KeyListener{
 
 
         scoreLabel = new JLabel();
-        scoreLabel.setText("SCORE: " + score);
+        scoreLabel.setText("<html><center>SCORE: " + score + "</center></html>");
         //scoreLabel.setFont(customFont.deriveFont(Font.BOLD, 15f));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setBounds(540, 20, 200, 50);
+        scoreLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         scoreLabel.setOpaque(true);
         scoreLabel.setBackground(Color.decode(scheme.labelBackHex));
         scoreLabel.setForeground(Color.decode(scheme.labelForeHex));
