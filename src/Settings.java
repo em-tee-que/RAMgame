@@ -57,7 +57,7 @@ public class Settings {
         schemeSelection.setBounds(0, 0, 100, 50);
         settings.getContentPane().add(schemeSelection);
 
-        String[] choices = { "Default", "Primary", "Deuteranopia", "Pastel", "Protanopia", "Tritanopia"};
+        String[] choices = { "Default", "Primary", "Deuteranopia", "Pastel", "Protanopia", "Tritanopia", "Jane", "Maheen"};
 
         JComboBox<String> comboColour = new JComboBox<String>(choices);
 

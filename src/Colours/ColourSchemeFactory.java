@@ -21,7 +21,14 @@ public class ColourSchemeFactory {
         }
         else if (name.equals("Tritanopia")) {
             return new TritanopiaColourScheme();
-        } else {
+        } 
+        else if (name.equals("Jane")) {
+            return new JaneColourScheme();
+        }
+        else if (name.equals("Maheen")) {
+            return new MaheenColourScheme();
+        }
+        else {
             return new DefaultColourScheme();
         }
     }

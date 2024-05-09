@@ -10,6 +10,6 @@ public class ProtanopiaColourScheme extends ColourScheme{
         colourHex4 = "#473F14";
 
         labelForeHex = "#FFFFFF";
-        labelBackHex = "#6A4C93";
+        labelBackHex = "#199565";
     }
 }

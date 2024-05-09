@@ -2,12 +2,12 @@ package Colours;
 public class PastelColourScheme extends ColourScheme{
     public PastelColourScheme() {
         name = "Pastel";
-        colourHex1 = "#FF99C8";
-        colourHex2 = "#FCF6BD";
-        colourHex3 = "#d0f4de";
-        colourHex4 = "#a9def9";
+        colourHex1 = "#FF9DCB";
+        colourHex2 = "#9EBDFF";
+        colourHex3 = "#9BF7BE";
+        colourHex4 = "#FFF6A2";
 
         labelForeHex = "#FFFFFF";
-        labelBackHex = "#6A4C93";
+        labelBackHex = "#FFC097";
     }
 }

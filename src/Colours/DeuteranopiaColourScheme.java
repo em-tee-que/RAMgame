@@ -9,7 +9,7 @@ public class DeuteranopiaColourScheme extends ColourScheme{
         colourHex3 = "#625B49";
         colourHex4 = "#BCBEE7";
 
-        labelForeHex = "#BF509C";
-        labelBackHex = "#EBEE90";
+        labelForeHex = "#FFFFFF";
+        labelBackHex = "#5DC1D5";
     }
 }
