@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
@@ -116,6 +117,19 @@ public class Menu {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                     try {
                         stopBackgroundMusic();
+
+                        String path = (System.getProperty("user.dir") + "\\savedData.txt");
+                        String data = (selectedColourScheme.name + "\n" + hardMode);
+
+                        File dataFile =new File(path);
+
+                        try {
+                            FileWriter f2 = new FileWriter(dataFile, false);
+                            f2.write(data);
+                            f2.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }    
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

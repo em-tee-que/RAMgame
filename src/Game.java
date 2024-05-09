@@ -16,9 +16,10 @@ import Colours.ColourScheme;
 import Sounds.SoundUtility;
 
 
-public class Game {
+public class Game implements KeyListener{
 
     boolean playAgainFlag = false;
+    boolean askingPlayAgain = false;
 
     JFrame colourWindow;
     JButton butColour1;
@@ -56,6 +57,7 @@ public class Game {
         colourWindow.setLocationRelativeTo(null);
         colourWindow.setLayout(null);
         colourWindow.setIconImage(img.getImage());
+        colourWindow.addKeyListener(this);
 
 
         scoreLabel = new JLabel();
@@ -96,11 +98,10 @@ public class Game {
         colourWindow.getContentPane().add(butColour1);
         butColour1.setLocation(290,310);
         butColour1.setVisible(false);
+        butColour1.setFocusable(false);
         butColour1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                SoundUtility beep = new SoundUtility();
-                beep.playSound(SoundUtility.Sounds.colour1);
-                checkAnswer(1);
+                answer(1);
             }
         });
 
@@ -110,11 +111,10 @@ public class Game {
         colourWindow.getContentPane().add(butColour2);
         butColour2.setLocation(490, 310);
         butColour2.setVisible(false);
+        butColour2.setFocusable(false);
         butColour2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                SoundUtility beep = new SoundUtility();
-                beep.playSound(SoundUtility.Sounds.colour2);
-                checkAnswer(2);
+                answer(2);
             }
         });
 
@@ -124,11 +124,10 @@ public class Game {
         colourWindow.getContentPane().add(butColour3);
         butColour3.setLocation(690,310);
         butColour3.setVisible(false);
+        butColour3.setFocusable(false);
         butColour3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                SoundUtility beep = new SoundUtility();
-                beep.playSound(SoundUtility.Sounds.colour3);
-                checkAnswer(3);
+                answer(3);
             }
         });
 
@@ -138,11 +137,10 @@ public class Game {
         colourWindow.getContentPane().add(butColour4);
         butColour4.setLocation(890,310);
         butColour4.setVisible(false);
+        butColour4.setFocusable(false);
         butColour4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                SoundUtility beep = new SoundUtility();
-                beep.playSound(SoundUtility.Sounds.colour4);
-                checkAnswer(4);
+                answer(4);
             }
         });
 
@@ -171,6 +169,9 @@ public class Game {
             newColour = (int)(Math.random()*4 + 1);
         }
         sequence.add(newColour);
+
+        //reseting the flag that stops game over window from opening multiple times
+        playAgainFlag = false;
         doRound();
     }
  
@@ -180,9 +181,7 @@ public class Game {
         colourCounter = 0;    
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.err.println(colourCounter);
-
-                if (colourCounter >= sequence.size()) {
+                if (colourCounter == sequence.size()) {
                     colourWindow.getContentPane().setBackground(Color.white);
 
                     ((Timer)evt.getSource()).stop();
@@ -193,6 +192,7 @@ public class Game {
                     butColour2.setVisible(true);
                     butColour3.setVisible(true);
                     butColour4.setVisible(true);
+                    return;
                 }
 
                 if (sequence.get(colourCounter) == 1){
@@ -229,6 +229,10 @@ public class Game {
     }
 
     private void checkAnswer(int buttonChosen){
+        if (askingPlayAgain) {
+            return;
+        }
+
         if (sequence.get(answerTerm) == buttonChosen){
             int totalTerms = (sequence.size() - 1);
             if (answerTerm == totalTerms){
@@ -250,6 +254,8 @@ public class Game {
             }
         }
         else {
+            //has to be out here because this is what prevents spamming incorrect button from opening gameOver multiple times, cant have delay
+            askingPlayAgain = true;
             Timer delayTimer = new Timer(300, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -326,5 +332,50 @@ public class Game {
             delayTimer.setRepeats(false);
             delayTimer.start();
         }
+    }
+
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        String pressedKey = String.valueOf(e.getKeyChar());
+        if (pressedKey.equals("1")) {
+            butColour1.doClick();
+        }
+        else if (pressedKey.equals("2")) {
+            butColour2.doClick();
+        }
+        else if (pressedKey.equals("3")) {
+            butColour3.doClick();
+        }
+        else if (pressedKey.equals("4")) {
+            butColour4.doClick();
+        }
+    }
+
+    //forced to override this cause class implements keylistener :/, just leave empty
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void answer(int answerValue) {
+        SoundUtility beep = new SoundUtility();
+
+        if (answerValue == 1) {
+            beep.playSound(SoundUtility.Sounds.colour1);
+        }
+        else if (answerValue == 2) {
+            beep.playSound(SoundUtility.Sounds.colour2);
+        }
+        else if (answerValue == 3) {
+            beep.playSound(SoundUtility.Sounds.colour3);
+        }
+        else {
+            beep.playSound(SoundUtility.Sounds.colour4);
+        }
+        checkAnswer(answerValue);
     }
 }
