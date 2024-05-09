@@ -22,11 +22,11 @@ public class ColourSchemeFactory {
         else if (name.equals("Tritanopia")) {
             return new TritanopiaColourScheme();
         } 
-        else if (name.equals("Jane")) {
-            return new JaneColourScheme();
+        else if (name.equals("Elizziebear")) {
+            return new ElizziebearColourScheme();
         }
-        else if (name.equals("Maheen")) {
-            return new MaheenColourScheme();
+        else if (name.equals("MTK")) {
+            return new MTKColourScheme();
         }
         else {
             return new DefaultColourScheme();

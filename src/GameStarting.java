@@ -11,12 +11,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
 import Colours.ColourScheme;
+import Themes.Theme;
 
 public class GameStarting {
 
+    //flags if they going back to menu, stops music from playing over itself
     boolean backToMenu;
 
-    public void beginGame(ColourScheme selectedColourScheme, boolean isHard) throws Exception{
+    public void beginGame(ColourScheme selectedColourScheme, boolean isHard, boolean isSound, Theme selectedTheme) throws Exception{
 
         ImageIcon img = new ImageIcon("src/Images/icon.png");
 
@@ -49,7 +51,7 @@ public class GameStarting {
             public void actionPerformed(ActionEvent e){
                 try {
                     Game game = new Game();
-                    game.runGame(selectedColourScheme, isHard);
+                    game.runGame(selectedColourScheme, isHard, isSound, selectedTheme);
                     backToMenu = false;
                     checkReady.dispatchEvent(new WindowEvent(checkReady, WindowEvent.WINDOW_CLOSING));
                 } catch (Exception e1) {
@@ -72,7 +74,7 @@ public class GameStarting {
             public void actionPerformed(ActionEvent e){
                 try {
                     Menu mainMenu = Menu.getInstance();
-                    mainMenu.mainMenu(selectedColourScheme, isHard);
+                    mainMenu.mainMenu(selectedColourScheme, isHard, isSound, selectedTheme);
                     backToMenu = true;
                     checkReady.dispatchEvent(new WindowEvent(checkReady, WindowEvent.WINDOW_CLOSING));
                 } catch (Exception e1) {
@@ -89,7 +91,7 @@ public class GameStarting {
                 if (backToMenu == true){
                     try {
                         Menu mainMenu = Menu.getInstance();
-                        mainMenu.mainMenu(selectedColourScheme, isHard);
+                        mainMenu.mainMenu(selectedColourScheme, isHard, isSound, selectedTheme);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

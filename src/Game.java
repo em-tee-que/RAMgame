@@ -14,6 +14,7 @@ import javax.swing.Timer;
 
 import Colours.ColourScheme;
 import Sounds.SoundUtility;
+import Themes.Theme;
 
 
 public class Game implements KeyListener{
@@ -37,16 +38,21 @@ public class Game implements KeyListener{
 
     ColourScheme scheme;
     boolean hardMode;
+    boolean soundToggle;
+
+    Theme theme;
 
     List<Integer> sequence;
     Integer answerTerm;
 
     Font customFont;
 
-    public void runGame(ColourScheme selectedColourScheme, boolean isHard){
+    public void runGame(ColourScheme selectedColourScheme, boolean isHard, boolean isSound, Theme selectedTheme) {
  
         scheme = selectedColourScheme;
         hardMode = isHard;
+        soundToggle = isSound;
+        theme = selectedTheme;
 
         score = 0;
 
@@ -85,7 +91,7 @@ public class Game implements KeyListener{
                 if (playAgainFlag == false) {
                     try {
                         Menu mainMenu = Menu.getInstance();
-                        mainMenu.mainMenu(scheme, isHard);
+                        mainMenu.mainMenu(scheme, isHard, soundToggle, theme);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -197,20 +203,28 @@ public class Game implements KeyListener{
                 }
 
                 if (sequence.get(colourCounter) == 1){
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour1);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour1);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex1));
                 } else if (sequence.get(colourCounter) == 2){
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour2);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour2);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex2));
                 } else if (sequence.get(colourCounter) == 3){
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour3);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour3);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex3));
                 } else {
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour4);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour4);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex4));
                 }
                 colourWindow.invalidate(); //make the colourwindow repaint to screen
@@ -241,8 +255,10 @@ public class Game implements KeyListener{
                 Timer delayTimer = new Timer(500, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        SoundUtility beep = new SoundUtility();
-                        beep.playSound(SoundUtility.Sounds.good);
+                        if (soundToggle) {
+                            SoundUtility beep = new SoundUtility();
+                            beep.playSound(SoundUtility.Sounds.good);
+                        }
                         scoreLabel.setText("Score: " + score);
                         nextRound();
                     }
@@ -262,8 +278,10 @@ public class Game implements KeyListener{
                 public void actionPerformed(ActionEvent e) {
                     playAgainFlag = false;
 
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.bad);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.bad);
+                    }
 
                     ImageIcon img = new ImageIcon("src/Images/icon.png");
 
@@ -276,7 +294,7 @@ public class Game implements KeyListener{
 
                     JLabel youLost = new JLabel();
                     youLost.setHorizontalAlignment(SwingConstants.CENTER);
-                    youLost.setText("<html><div style='text-align: center;'>Game over!<br><br> Would you like to play again?</html>");
+                    youLost.setText("<html><div style='text-align: center;'>Game over! Your score was " + score + "!<br><br> Would you like to play again?</html>");
                     youLost.setFont(new Font("Bahnschrift", Font.BOLD, 30));
                     youLost.setBounds(265, 175, 750, 150);
                     youLost .setForeground(Color.decode("#CCF7B5"));
@@ -297,7 +315,7 @@ public class Game implements KeyListener{
                             try {
                                 playAgainFlag = true;
                                 GameStarting begin = new GameStarting();
-                                begin.beginGame(scheme, hardMode);
+                                begin.beginGame(scheme, hardMode, soundToggle, theme);
                                 colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                                 gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
 
@@ -365,16 +383,16 @@ public class Game implements KeyListener{
     public void answer(int answerValue) {
         SoundUtility beep = new SoundUtility();
 
-        if (answerValue == 1) {
+        if (answerValue == 1 && soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour1);
         }
-        else if (answerValue == 2) {
+        else if (answerValue == 2 && soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour2);
         }
-        else if (answerValue == 3) {
+        else if (answerValue == 3 && soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour3);
         }
-        else {
+        else if (soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour4);
         }
         checkAnswer(answerValue);
