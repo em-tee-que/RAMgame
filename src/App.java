@@ -15,15 +15,11 @@ public class App {
         File file = new File(path);
 
         if (file.exists()) {
-            try {
-                Scanner reader = new Scanner(file);
-                String savedColour = reader.nextLine();
-                scheme = Colours.ColourSchemeFactory.getColourScheme(savedColour);
-                mode = Boolean.parseBoolean(reader.nextLine());
-                reader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Scanner reader = new Scanner(file);
+            String savedColour = reader.nextLine();
+            scheme = Colours.ColourSchemeFactory.getColourScheme(savedColour);
+            mode = Boolean.parseBoolean(reader.nextLine());
+            reader.close();
         }
         Menu mainMenu = Menu.getInstance();
         mainMenu.mainMenu(scheme, mode);
