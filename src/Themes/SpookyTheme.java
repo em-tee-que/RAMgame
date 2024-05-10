@@ -4,8 +4,8 @@ public class SpookyTheme extends Theme {
     public SpookyTheme() {
         themeName = "Spooky";
 
-        button = "#ee9900";
-        background = "#18181a";
+        button = "#18181a";
+        background = "#ee9900";
     
         banner = "src/images/titlebannerspooky.png";
     

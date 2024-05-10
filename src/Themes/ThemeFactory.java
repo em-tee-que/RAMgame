@@ -11,6 +11,9 @@ public class ThemeFactory {
         if (themeName.equals("Spooky")) {
             return new SpookyTheme();
         }
+        if (themeName.equals("Galactic")) {
+            return new GalacticTheme();
+        }
         return new DefaultTheme();
     }
 

@@ -26,7 +26,7 @@ public class GameStarting {
         checkReady.setSize(1280, 720);
         checkReady.setLocationRelativeTo(null);
         checkReady.setLayout(null);
-        checkReady.getContentPane().setBackground(Color.decode("#3B6A48"));
+        checkReady.getContentPane().setBackground(Color.decode(selectedTheme.background));
         checkReady.setIconImage(img.getImage());
 
         JLabel instructions = new JLabel();
@@ -34,15 +34,15 @@ public class GameStarting {
         instructions.setText("<html><div style='text-align: center;'>You will be shown a sequence of colours, starting <br>with 2 and increasing by 1 each time.<br><br>Are you ready?</html>");
         instructions.setFont(new Font("Bahnschrift", Font.BOLD, 30));
         instructions.setBounds(265, 175, 750, 150);
-        instructions.setForeground(Color.decode("#CCF7B5"));
+        instructions.setForeground(Color.decode(selectedTheme.button));
         checkReady.getContentPane().add(instructions);
 
         JButton ready = new JButton("<html><center>I'M READY!</center></html>");
         checkReady.add(ready);
         ready.setBounds(515, 360, 250, 50);
         ready.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-        ready.setForeground(Color.decode("#3B6A48"));
-        ready.setBackground(Color.decode("#CCF7B5"));
+        ready.setForeground(Color.decode(selectedTheme.background));
+        ready.setBackground(Color.decode(selectedTheme.button));
         ready.setOpaque(true);
         ready.setBorderPainted(false);
         ready.setFocusPainted(false);
@@ -64,8 +64,8 @@ public class GameStarting {
         checkReady.add(notReady);
         notReady.setBounds(515, 460, 250, 50);
         notReady.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-        notReady.setForeground(Color.decode("#3B6A48"));
-        notReady.setBackground(Color.decode("#CCF7B5"));
+        notReady.setForeground(Color.decode(selectedTheme.background));
+        notReady.setBackground(Color.decode(selectedTheme.button));
         notReady.setOpaque(true);
         notReady.setBorderPainted(false);
         notReady.setFocusPainted(false);
@@ -77,6 +77,7 @@ public class GameStarting {
                     mainMenu.mainMenu(selectedColourScheme, isHard, isSound, selectedTheme);
                     backToMenu = true;
                     checkReady.dispatchEvent(new WindowEvent(checkReady, WindowEvent.WINDOW_CLOSING));
+                    mainMenu.playBackgroundMusic();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

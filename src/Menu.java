@@ -64,7 +64,7 @@ public class Menu {
 
         //applies menu changes if any
         applyTheme();
-        
+
         menu.setVisible(true);
     }
 
@@ -180,13 +180,15 @@ public class Menu {
 
     public void playBackgroundMusic() {
         try {
-            File audioFile = new File(theme.song);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
-            backgroundMusic = AudioSystem.getClip();
-            backgroundMusic.open(audioStream);
-            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
-            isMusicPlaying = true;
+            if (soundToggle) {
+                File audioFile = new File(theme.song);
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+    
+                backgroundMusic = AudioSystem.getClip();
+                backgroundMusic.open(audioStream);
+                backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                isMusicPlaying = true;
+            }
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }

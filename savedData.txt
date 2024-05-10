@@ -1,4 +1,0 @@
-Pastel
-true
-true
-Spooky
