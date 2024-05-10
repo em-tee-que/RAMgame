@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -43,6 +44,7 @@ public class Menu {
     JButton closeGame;
 
     JLabel scoreText;
+    JLabel scoreImage;
 
     boolean isMusicPlaying = false;
 
@@ -101,52 +103,23 @@ public class Menu {
         picture.setVisible(true);
 
         scoreText = new JLabel();
-        scoreText.setBounds(880, 350, 200, 220);
+        scoreText.setBounds(870, 350, 180, 220);
+        scoreText.setHorizontalAlignment(SwingConstants.LEFT);
         scoreText.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        scoreText.setForeground(Color.decode(theme.background));
+        scoreText.setForeground(Color.decode(theme.scoreText));
         scoreText.setLayout(null);
         scoreText.setVisible(true);
         menu.add(scoreText);
 
-        //all of this is for score display
         ImageIcon scoreBackground = new ImageIcon(theme.scoreTheme);
-        JLabel scoreImage = new JLabel(scoreBackground);
+        scoreImage = new JLabel();
+        scoreImage.setIcon(scoreBackground);
         scoreImage.setBounds(850, 350, 200, 220);
         scoreImage.setLayout(null);
         scoreImage.setVisible(true);
         menu.add(scoreImage);
 
-        File file = new File("savedScores.txt");
-        if (file.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                ArrayList<String> scores = new ArrayList<>();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    scores.add(line);
-                }
-                // Display high scores
-                if (!scores.isEmpty()) {
-                    StringBuilder buildScore = new StringBuilder("<html>");
-                    for (String score : scores) {
-                        // Split the score into name and score
-                        String[] parts = score.split(";");
-                        if (parts.length == 2) {
-                            // Append score and then name
-                            buildScore.append(parts[1]).append(" - ").append(parts[0]).append("<br>");
-                        }
-                    }
-                    buildScore.append("</html>");
-                    scoreText.setText(buildScore.toString());
-                } else {
-                    scoreText.setText("No high scores");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            scoreText.setText("No high scores");
-        }
-
+        updateScore();
 
         menu.add(startGame);
         startGame.setBounds(515, 360, 250, 50);
@@ -269,6 +242,10 @@ public class Menu {
 
         ImageIcon imageIcon = new ImageIcon(theme.banner);
         picture.setIcon(imageIcon);
+        ImageIcon scoreBackground = new ImageIcon(theme.scoreTheme);
+        scoreImage.setIcon(scoreBackground);
+
+        scoreText.setForeground(Color.decode(theme.scoreText));
 
         startGame.setForeground(Color.decode(theme.background));
         startGame.setBackground(Color.decode(theme.button));
@@ -291,13 +268,21 @@ public class Menu {
                 }
                 // Display high scores
                 if (!scores.isEmpty()) {
+                    Collections.sort(scores, (s1, s2) -> {
+                        int score1 = Integer.parseInt(s1.split(";")[1].trim());
+                        int score2 = Integer.parseInt(s2.split(";")[1].trim());
+                        return Integer.compare(score2, score1); // Sort descending
+                    });
+
                     StringBuilder buildScore = new StringBuilder("<html>");
+                    int rank = 1;
                     for (String score : scores) {
                         // Split the score into name and score
                         String[] parts = score.split(";");
                         if (parts.length == 2) {
-                            // Append score and then name
-                            buildScore.append(parts[1]).append(" - ").append(parts[0]).append("<br>");
+                            // Append rank, player name, and score with increased space
+                            buildScore.append(rank).append(getRankSuffix(rank)).append("&nbsp;&nbsp;-&nbsp;&nbsp;").append(parts[0].trim()).append("&nbsp;&nbsp;&nbsp;").append(parts[1].trim()).append("<br>");
+                            rank++;
                         }
                     }
                     buildScore.append("</html>");
@@ -310,6 +295,19 @@ public class Menu {
             }
         } else {
             scoreText.setText("No high scores");
+        }
+    }
+
+    // get suffix for rank (e.g., 1st, 2nd, 3rd)
+    private static String getRankSuffix(int rank) {
+        if (rank % 10 == 1 && rank % 100 != 11) {
+            return "st";
+        } else if (rank % 10 == 2 && rank % 100 != 12) {
+            return "nd";
+        } else if (rank % 10 == 3 && rank % 100 != 13) {
+            return "rd";
+        } else {
+            return "th";
         }
     }
 }
