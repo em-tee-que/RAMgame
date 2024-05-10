@@ -21,7 +21,14 @@ public class ColourSchemeFactory {
         }
         else if (name.equals("Tritanopia")) {
             return new TritanopiaColourScheme();
-        } else {
+        } 
+        else if (name.equals("Elizziebear")) {
+            return new ElizziebearColourScheme();
+        }
+        else if (name.equals("MTK")) {
+            return new MTKColourScheme();
+        }
+        else {
             return new DefaultColourScheme();
         }
     }

@@ -3,6 +3,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import Colours.ColourScheme;
+import Themes.Theme;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -27,12 +28,20 @@ public class Menu {
 
     ColourScheme selectedColourScheme;
     boolean hardMode;
+    boolean soundToggle;
+    String filePath;
 
     Clip backgroundMusic;
 
     JFrame menu;
+    JLabel picture;
+    JButton startGame;
+    JButton settings;
+    JButton closeGame;
 
     boolean isMusicPlaying = false;
+
+    Theme theme;
 
     public static Menu getInstance() {
         if (instance == null) {
@@ -41,21 +50,22 @@ public class Menu {
         return instance;
     }
 
-    public void mainMenu(ColourScheme scheme, boolean isHard) throws Exception {
+    public void mainMenu(ColourScheme scheme, boolean isHard, boolean isSound, Theme selectedTheme) throws Exception {
 
         selectedColourScheme = scheme;
         hardMode = isHard;
+        soundToggle = isSound;
+        theme = selectedTheme;
+        filePath = (theme.song);
         
         if (menu == null) {
             createMenu();
         }
 
+        //applies menu changes if any
+        applyTheme();
+
         menu.setVisible(true);
-        
-        if (!isMusicPlaying) {
-            playBackgroundMusic("src/Sounds/RAMgameTheme.wav");
-            isMusicPlaying = true;
-        }
     }
 
     private void createMenu(){
@@ -63,21 +73,23 @@ public class Menu {
         ImageIcon img = new ImageIcon("src/Images/icon.png");
 
         menu = new JFrame("RAM (game)");
-        JButton startGame = new JButton("<html><center>PLAY!<center></html>");
-        JButton settings = new JButton("<html><center>SETTINGS<center></html>");
-        JButton closeGame = new JButton("<html><center>EXIT<center></html>");
-        JLabel picture = new JLabel();
+        startGame = new JButton("<html><center>PLAY!<center></html>");
+        settings = new JButton("<html><center>SETTINGS<center></html>");
+        closeGame = new JButton("<html><center>EXIT<center></html>");
+        picture = new JLabel();
 
-        playBackgroundMusic("src/Sounds/RAMgameTheme.wav");
-        isMusicPlaying = true;
+        if (soundToggle) {
+            playBackgroundMusic();
+            isMusicPlaying = true;
+        }
 
         menu.setIconImage(img.getImage());
         menu.setSize(1280, 720);
         menu.setLocationRelativeTo(null);
         menu.setLayout(null);
-        menu.getContentPane().setBackground(Color.decode("#3B6A48"));
+        menu.getContentPane().setBackground(Color.decode(theme.background));
 
-        ImageIcon imageIcon = new ImageIcon("src/images/titlebanner.png");
+        ImageIcon imageIcon = new ImageIcon(theme.banner);
         picture.setIcon(imageIcon);
         menu.add(picture);
         picture.setBounds(140, 100, 1000, 200);
@@ -87,8 +99,8 @@ public class Menu {
         startGame.setBounds(515, 360, 250, 50);
         startGame.setVerticalAlignment(SwingConstants.CENTER);
         startGame.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-        startGame.setForeground(Color.decode("#3B6A48"));
-        startGame.setBackground(Color.decode("#CCF7B5"));
+        startGame.setForeground(Color.decode(theme.background));
+        startGame.setBackground(Color.decode(theme.button));
         startGame.setOpaque(true);
         startGame.setBorderPainted(false);
         startGame.setFocusPainted(false);
@@ -97,8 +109,8 @@ public class Menu {
         settings.setBounds(515, 435, 250, 50);
         settings.setVerticalAlignment(SwingConstants.CENTER);
         settings.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-        settings.setForeground(Color.decode("#3B6A48"));
-        settings.setBackground(Color.decode("#CCF7B5"));
+        settings.setForeground(Color.decode(theme.background));
+        settings.setBackground(Color.decode(theme.button));
         settings.setOpaque(true);
         settings.setBorderPainted(false);
         settings.setFocusPainted(false);
@@ -107,8 +119,8 @@ public class Menu {
         closeGame.setBounds(515, 510, 250, 50);
         closeGame.setVerticalAlignment(SwingConstants.CENTER);
         closeGame.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-        closeGame.setForeground(Color.decode("#3B6A48"));
-        closeGame.setBackground(Color.decode("#CCF7B5"));
+        closeGame.setForeground(Color.decode(theme.background));
+        closeGame.setBackground(Color.decode(theme.button));
         closeGame.setOpaque(true);
         closeGame.setBorderPainted(false);
         closeGame.setFocusPainted(false);
@@ -119,9 +131,9 @@ public class Menu {
                         stopBackgroundMusic();
 
                         String path = (System.getProperty("user.dir") + "\\savedData.txt");
-                        String data = (selectedColourScheme.name + "\n" + hardMode);
+                        String data = (selectedColourScheme.name + "\n" + hardMode + "\n" + soundToggle + "\n" + theme.themeName);
 
-                        File dataFile =new File(path);
+                        File dataFile = new File(path);
 
                         try {
                             FileWriter f2 = new FileWriter(dataFile, false);
@@ -140,7 +152,7 @@ public class Menu {
             public void actionPerformed(ActionEvent e){
                 GameStarting begin = new GameStarting();
                 try {
-                    begin.beginGame(selectedColourScheme, hardMode);
+                    begin.beginGame(selectedColourScheme, hardMode, soundToggle, theme);
                     menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -152,7 +164,7 @@ public class Menu {
         settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 Settings runSettings = new Settings(Menu.this);
-                runSettings.runSettings(selectedColourScheme, hardMode);
+                runSettings.runSettings(selectedColourScheme, hardMode, soundToggle, filePath, isMusicPlaying, theme);
                 menu.setVisible(false);
             }
         });
@@ -166,21 +178,23 @@ public class Menu {
         menu.setVisible(true);
     }
 
-    private void playBackgroundMusic(String filePath) {
+    public void playBackgroundMusic() {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
-            backgroundMusic = AudioSystem.getClip();
-            backgroundMusic.open(audioStream);
-            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
-            isMusicPlaying = true;
+            if (soundToggle) {
+                File audioFile = new File(theme.song);
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+    
+                backgroundMusic = AudioSystem.getClip();
+                backgroundMusic.open(audioStream);
+                backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                isMusicPlaying = true;
+            }
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void stopBackgroundMusic() {
+    public void stopBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isRunning()) {
             backgroundMusic.stop();
             backgroundMusic.close();
@@ -190,5 +204,26 @@ public class Menu {
 
     public void setVisible(boolean b) {
         menu.setVisible(true);
+    }
+
+    public void closeMenu() {
+        menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
+    }
+
+    public void applyTheme() {
+
+        menu.getContentPane().setBackground(Color.decode(theme.background));
+
+        ImageIcon imageIcon = new ImageIcon(theme.banner);
+        picture.setIcon(imageIcon);
+
+        startGame.setForeground(Color.decode(theme.background));
+        startGame.setBackground(Color.decode(theme.button));
+
+        settings.setForeground(Color.decode(theme.background));
+        settings.setBackground(Color.decode(theme.button));
+
+        closeGame.setForeground(Color.decode(theme.background));
+        closeGame.setBackground(Color.decode(theme.button));
     }
 }

@@ -6,14 +6,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.Timer;
 
 import Colours.ColourScheme;
 import Sounds.SoundUtility;
+import Themes.Theme;
 
 
 public class Game implements KeyListener{
@@ -37,16 +43,21 @@ public class Game implements KeyListener{
 
     ColourScheme scheme;
     boolean hardMode;
+    boolean soundToggle;
+
+    Theme theme;
 
     List<Integer> sequence;
     Integer answerTerm;
 
     Font customFont;
 
-    public void runGame(ColourScheme selectedColourScheme, boolean isHard){
+    public void runGame(ColourScheme selectedColourScheme, boolean isHard, boolean isSound, Theme selectedTheme) {
  
         scheme = selectedColourScheme;
         hardMode = isHard;
+        soundToggle = isSound;
+        theme = selectedTheme;
 
         score = 0;
 
@@ -61,10 +72,11 @@ public class Game implements KeyListener{
 
 
         scoreLabel = new JLabel();
-        scoreLabel.setText("SCORE: " + score);
+        scoreLabel.setText("<html><center>SCORE: " + score + "</center></html>");
         //scoreLabel.setFont(customFont.deriveFont(Font.BOLD, 15f));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setBounds(540, 20, 200, 50);
+        scoreLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         scoreLabel.setOpaque(true);
         scoreLabel.setBackground(Color.decode(scheme.labelBackHex));
         scoreLabel.setForeground(Color.decode(scheme.labelForeHex));
@@ -84,7 +96,8 @@ public class Game implements KeyListener{
                 if (playAgainFlag == false) {
                     try {
                         Menu mainMenu = Menu.getInstance();
-                        mainMenu.mainMenu(scheme, isHard);
+                        mainMenu.mainMenu(scheme, isHard, soundToggle, theme);
+                        mainMenu.playBackgroundMusic();
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -196,20 +209,28 @@ public class Game implements KeyListener{
                 }
 
                 if (sequence.get(colourCounter) == 1){
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour1);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour1);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex1));
                 } else if (sequence.get(colourCounter) == 2){
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour2);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour2);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex2));
                 } else if (sequence.get(colourCounter) == 3){
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour3);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour3);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex3));
                 } else {
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.colour4);
+                    if (soundToggle) {
+                        SoundUtility beep = new SoundUtility();
+                        beep.playSound(SoundUtility.Sounds.colour4);
+                    }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex4));
                 }
                 colourWindow.invalidate(); //make the colourwindow repaint to screen
@@ -240,8 +261,10 @@ public class Game implements KeyListener{
                 Timer delayTimer = new Timer(500, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        SoundUtility beep = new SoundUtility();
-                        beep.playSound(SoundUtility.Sounds.good);
+                        if (soundToggle) {
+                            SoundUtility beep = new SoundUtility();
+                            beep.playSound(SoundUtility.Sounds.good);
+                        }
                         scoreLabel.setText("Score: " + score);
                         nextRound();
                     }
@@ -259,74 +282,7 @@ public class Game implements KeyListener{
             Timer delayTimer = new Timer(300, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    playAgainFlag = false;
-
-                    SoundUtility beep = new SoundUtility();
-                    beep.playSound(SoundUtility.Sounds.bad);
-
-                    ImageIcon img = new ImageIcon("src/Images/icon.png");
-
-                    JFrame gameOver = new JFrame("Oh no!");
-                    gameOver.setSize(1280, 720);
-                    gameOver.setLocationRelativeTo(null);
-                    gameOver.setLayout(null);
-                    gameOver.getContentPane().setBackground(Color.decode("#3B6A48"));
-                    gameOver.setIconImage(img.getImage());
-
-                    JLabel youLost = new JLabel();
-                    youLost.setHorizontalAlignment(SwingConstants.CENTER);
-                    youLost.setText("<html><div style='text-align: center;'>Game over!<br><br> Would you like to play again?</html>");
-                    youLost.setFont(new Font("Bahnschrift", Font.BOLD, 30));
-                    youLost.setBounds(265, 175, 750, 150);
-                    youLost .setForeground(Color.decode("#CCF7B5"));
-                    gameOver.getContentPane().add(youLost);
-
-                    JButton yes = new JButton("<html><center>YES</html></center>");
-                    gameOver.add(yes);
-                    yes.setBounds(515, 360, 250, 50);
-                    yes.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-                    yes.setForeground(Color.decode("#3B6A48"));
-                    yes.setBackground(Color.decode("#CCF7B5"));
-                    yes.setOpaque(true);
-                    yes.setBorderPainted(false);
-                    yes.setFocusPainted(false);
-            
-                    yes.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e){
-                            try {
-                                playAgainFlag = true;
-                                GameStarting begin = new GameStarting();
-                                begin.beginGame(scheme, hardMode);
-                                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                                gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
-
-                            } catch (Exception e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                    });
-
-                    JButton no = new JButton("<html><center>NO THANKS</html></center>");
-                    gameOver.add(no);
-                    no.setBounds(515, 460, 250, 50);
-                    no.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-                    no.setForeground(Color.decode("#3B6A48"));
-                    no.setBackground(Color.decode("#CCF7B5"));
-                    no.setOpaque(true);
-                    no.setBorderPainted(false);
-                    no.setFocusPainted(false);
-            
-                    no.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e){
-                            playAgainFlag = false;
-                            colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
-                            gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
-                        }
-                    });
-
-                    gameOver.setVisible(true);
-
-                    answerTerm = 0;
+                    endGame();
                 }
             });
             delayTimer.setRepeats(false);
@@ -334,6 +290,163 @@ public class Game implements KeyListener{
         }
     }
 
+    public void endGame() {
+        playAgainFlag = false;
+
+        if (soundToggle) {
+            SoundUtility beep = new SoundUtility();
+            beep.playSound(SoundUtility.Sounds.bad);
+        }
+
+        // check if new high score
+        // open file and read it
+        String path = (System.getProperty("user.dir") + "\\savedScores.txt");
+        File file = new File(path);
+
+        //must set to null at first otherwise code thinks they may not be set
+        String[] first = null;
+        String[] second = null;
+        String[] third = null;
+
+        if (file.exists()) {
+            Scanner reader;
+            try {
+                reader = new Scanner(file);
+                if (reader.hasNext()) {
+                    first = reader.nextLine().split(";");
+                }
+                if (reader.hasNext()) {
+                    second = reader.nextLine().split(";");
+                }
+                if (reader.hasNext()) {
+                    third = reader.nextLine().split(";");
+                }
+                reader.close();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        }
+        //compare scores in file with current score
+        int rank = 0;
+
+        if (first == null || score > Integer.parseInt(first[1])) {
+            rank = 1;
+        }
+        else if (second == null || score > Integer.parseInt(second[1])) {
+            rank = 2;
+        }
+        else if (third == null || score > Integer.parseInt(third[1])) {
+            rank =3;
+        }
+
+        System.out.println(rank);
+        
+        String playerName = "";
+        String scoreData = "";
+        //if its a high score, ask for name
+        if (rank == 1) {
+            playerName = JOptionPane.showInputDialog("High score! You made first place! Enter your name:");
+
+            scoreData = (playerName + ";" + score);
+            if (first != null) {
+                scoreData += "\n" + first[0] + ";" + first[1];
+            }
+            if (second != null) {
+                scoreData += "\n" + second[0] + ";" + second[1];
+            }
+        }
+        else if (rank == 2) {
+            playerName = JOptionPane.showInputDialog("High score! You're in second! Enter your name:");
+
+            scoreData = (first[0] + ";" + first[1] + "\n" + playerName + ";" + score);
+            if (second != null) {
+                scoreData +=  "\n" + second[0] + ";" + second[1];
+            }
+
+        }
+        else if (rank == 3) {
+            playerName = JOptionPane.showInputDialog("High score! Third overall, not too shabby! Enter your name:");
+
+            scoreData = (first[0] + ";" + first[1] + "\n" + second[0] + ";" + second[1] + "\n" + playerName + ";" + score);
+        }
+
+        File scoreFile = new File(path);
+
+        if (scoreData != "") {
+            try {
+                FileWriter f2 = new FileWriter(scoreFile, false);
+                f2.write(scoreData);
+                f2.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                }
+        }
+
+        ImageIcon img = new ImageIcon("src/Images/icon.png");
+
+        JFrame gameOver = new JFrame("Oh no!");
+        gameOver.setSize(1280, 720);
+        gameOver.setLocationRelativeTo(null);
+        gameOver.setLayout(null);
+        gameOver.getContentPane().setBackground(Color.decode(theme.background));
+        gameOver.setIconImage(img.getImage());
+
+        JLabel youLost = new JLabel();
+        youLost.setHorizontalAlignment(SwingConstants.CENTER);
+        youLost.setText("<html><div style='text-align: center;'>Game over! Your score was " + score + "!<br><br> Would you like to play again?</html>");
+        youLost.setFont(new Font("Bahnschrift", Font.BOLD, 30));
+        youLost.setBounds(265, 175, 750, 150);
+        youLost .setForeground(Color.decode(theme.button));
+        gameOver.getContentPane().add(youLost);
+
+        JButton yes = new JButton("<html><center>YES</html></center>");
+        gameOver.add(yes);
+        yes.setBounds(515, 360, 250, 50);
+        yes.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        yes.setForeground(Color.decode(theme.background));
+        yes.setBackground(Color.decode(theme.button));
+        yes.setOpaque(true);
+        yes.setBorderPainted(false);
+        yes.setFocusPainted(false);
+
+        yes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                try {
+                    playAgainFlag = true;
+                    GameStarting begin = new GameStarting();
+                    begin.beginGame(scheme, hardMode, soundToggle, theme);
+                    colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                    gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
+
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        JButton no = new JButton("<html><center>NO THANKS</html></center>");
+        gameOver.add(no);
+        no.setBounds(515, 460, 250, 50);
+        no.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        no.setForeground(Color.decode(theme.background));
+        no.setBackground(Color.decode(theme.button));
+        no.setOpaque(true);
+        no.setBorderPainted(false);
+        no.setFocusPainted(false);
+
+        no.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                playAgainFlag = false;
+                colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
+                gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+
+        gameOver.setVisible(true);
+
+        answerTerm = 0;
+
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -364,16 +477,16 @@ public class Game implements KeyListener{
     public void answer(int answerValue) {
         SoundUtility beep = new SoundUtility();
 
-        if (answerValue == 1) {
+        if (answerValue == 1 && soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour1);
         }
-        else if (answerValue == 2) {
+        else if (answerValue == 2 && soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour2);
         }
-        else if (answerValue == 3) {
+        else if (answerValue == 3 && soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour3);
         }
-        else {
+        else if (soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour4);
         }
         checkAnswer(answerValue);
