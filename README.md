@@ -10,6 +10,22 @@ a Really Awesome Memory game!
 
 ### recent update(s)
 
+#### 5/9/2024
+
+- added theme select & three new themes
+- sound on/off now toggles in settings
+- theme is used everywhere, not just in menu
+- high score system, saves top 3 local scores!
+
+#### 5/8/2024
+
+- number key input
+- added hard mode
+- custom icon
+- new colour schemes!
+- welcome message & play again message are now JFrames
+- settings work to change and save changes
+
 #### 5/7/2024
 
 - welcome message and replay system
