@@ -8,9 +8,12 @@ import Themes.Theme;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -24,7 +27,7 @@ public class Menu {
 
     private static Menu instance;
 
-    private Menu() {}
+    Menu() {}
 
     ColourScheme selectedColourScheme;
     boolean hardMode;
@@ -38,6 +41,8 @@ public class Menu {
     JButton startGame;
     JButton settings;
     JButton closeGame;
+
+    JLabel scoreText;
 
     boolean isMusicPlaying = false;
 
@@ -94,6 +99,54 @@ public class Menu {
         menu.add(picture);
         picture.setBounds(140, 100, 1000, 200);
         picture.setVisible(true);
+
+        scoreText = new JLabel();
+        scoreText.setBounds(880, 350, 200, 220);
+        scoreText.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        scoreText.setForeground(Color.decode(theme.background));
+        scoreText.setLayout(null);
+        scoreText.setVisible(true);
+        menu.add(scoreText);
+
+        //all of this is for score display
+        ImageIcon scoreBackground = new ImageIcon(theme.scoreTheme);
+        JLabel scoreImage = new JLabel(scoreBackground);
+        scoreImage.setBounds(850, 350, 200, 220);
+        scoreImage.setLayout(null);
+        scoreImage.setVisible(true);
+        menu.add(scoreImage);
+
+        File file = new File("savedScores.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                ArrayList<String> scores = new ArrayList<>();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    scores.add(line);
+                }
+                // Display high scores
+                if (!scores.isEmpty()) {
+                    StringBuilder buildScore = new StringBuilder("<html>");
+                    for (String score : scores) {
+                        // Split the score into name and score
+                        String[] parts = score.split(";");
+                        if (parts.length == 2) {
+                            // Append score and then name
+                            buildScore.append(parts[1]).append(" - ").append(parts[0]).append("<br>");
+                        }
+                    }
+                    buildScore.append("</html>");
+                    scoreText.setText(buildScore.toString());
+                } else {
+                    scoreText.setText("No high scores");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            scoreText.setText("No high scores");
+        }
+
 
         menu.add(startGame);
         startGame.setBounds(515, 360, 250, 50);
@@ -225,5 +278,38 @@ public class Menu {
 
         closeGame.setForeground(Color.decode(theme.background));
         closeGame.setBackground(Color.decode(theme.button));
+    }
+
+    public void updateScore() {
+        File file = new File("savedScores.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                ArrayList<String> scores = new ArrayList<>();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    scores.add(line);
+                }
+                // Display high scores
+                if (!scores.isEmpty()) {
+                    StringBuilder buildScore = new StringBuilder("<html>");
+                    for (String score : scores) {
+                        // Split the score into name and score
+                        String[] parts = score.split(";");
+                        if (parts.length == 2) {
+                            // Append score and then name
+                            buildScore.append(parts[1]).append(" - ").append(parts[0]).append("<br>");
+                        }
+                    }
+                    buildScore.append("</html>");
+                    scoreText.setText(buildScore.toString());
+                } else {
+                    scoreText.setText("No high scores");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            scoreText.setText("No high scores");
+        }
     }
 }

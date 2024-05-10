@@ -8,6 +8,8 @@ public class SpookyTheme extends Theme {
         background = "#ee9900";
     
         banner = "src/images/titlebannerspooky.png";
+
+        scoreTheme = "src/Images/scorespooky.png";
     
         song = "src/Sounds/RAMgameThemeSpooky.wav";
     }
