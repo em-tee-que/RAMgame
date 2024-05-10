@@ -9,6 +9,8 @@ public class MedievalTheme extends Theme{
     
         banner = "src/images/titlebannermedieval.png";
     
+        scoreTheme = "src/Images/scoremedieval.png";
+
         song = "src/Sounds/RAMgameThemeMedieval.wav";
     }
 }

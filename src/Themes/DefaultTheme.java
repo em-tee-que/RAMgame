@@ -9,6 +9,8 @@ public class DefaultTheme extends Theme {
     
         banner = "src/images/titlebanner.png";
     
+        scoreTheme = "src/Images/scoredefault.png";
+        
         song = "src/Sounds/RAMgameTheme.wav";
     }
 }

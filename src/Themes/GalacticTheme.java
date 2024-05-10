@@ -8,7 +8,9 @@ public class GalacticTheme extends Theme{
         background = "#000000";
     
         banner = "src/images/titlebannergalactic.png";
-    
+        
+        scoreTheme = "src/Images/scoregalactic.png";
+
         song = "src/Sounds/RAMgameThemeGalactic.wav";
     }
 }

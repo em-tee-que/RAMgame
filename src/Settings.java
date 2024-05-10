@@ -73,7 +73,6 @@ public class Settings {
         schemeTitle.setVerticalAlignment(SwingConstants.BOTTOM);
         schemeTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         schemeTitle.setForeground(Color.decode(theme.button));
-        schemeTitle.setOpaque(true);
         settings.getContentPane().add(schemeTitle);
 
         JLabel schemeLabel = new JLabel("Pick a scheme to play with!");
@@ -81,7 +80,6 @@ public class Settings {
         schemeLabel.setBounds(184, 103, 540, 50);
         schemeLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         schemeLabel.setForeground(Color.decode(theme.button));
-        schemeLabel.setOpaque(true);
         settings.getContentPane().add(schemeLabel);
 
         String[] colourChoices = { "Default", "Primary", "Deuteranopia", "Pastel", "Protanopia", "Tritanopia", "Elizziebear", "MTK"};
@@ -100,9 +98,8 @@ public class Settings {
 //this is hard mode section
         JLabel hardTitle = new JLabel("Hard Mode");
         hardTitle.setBounds(66, 171,  404, 51);
-        hardTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+        hardTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         hardTitle.setForeground(Color.decode(theme.button));
-        hardTitle.setOpaque(true);
         settings.getContentPane().add(hardTitle);
 
         JLabel hardLabel = new JLabel("Up for a challenge?");
@@ -110,21 +107,21 @@ public class Settings {
         hardLabel.setBounds(184, 238, 540, 50);
         hardLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         hardLabel.setForeground(Color.decode(theme.button));
-        hardLabel.setOpaque(true);
         settings.getContentPane().add(hardLabel);
 
-        JCheckBox checkHard = new JCheckBox("HARD MODE >:D");
+        JCheckBox checkHard = new JCheckBox("   HARD MODE >:D");
         settings.add(checkHard);
         checkHard.setBounds(823, 238, 205, 50);
+        checkHard.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+        checkHard.setBackground(Color.decode(theme.background));
         checkHard.setForeground(Color.decode(theme.button));
         checkHard.setSelected(hardMode);
 
 //this is sound preferences
         JLabel soundTitle = new JLabel("Sound");
         soundTitle.setBounds(66, 309,  404, 51);
-        soundTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+        soundTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         soundTitle.setForeground(Color.decode(theme.button));
-        soundTitle.setOpaque(true);
         settings.getContentPane().add(soundTitle);
 
         JLabel soundLabel = new JLabel("Menu Music and Game Sound");
@@ -132,21 +129,21 @@ public class Settings {
         soundLabel.setBounds(184, 372, 540, 50);
         soundLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         soundLabel.setForeground(Color.decode(theme.button));
-        soundLabel.setOpaque(true);
         settings.getContentPane().add(soundLabel);
 
-        JCheckBox checkSound = new JCheckBox("sound on");
+        JCheckBox checkSound = new JCheckBox("   SOUND ON");
         settings.add(checkSound);
         checkSound.setBounds(823, 372, 205, 50);
+        checkSound.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+        checkSound.setBackground(Color.decode(theme.background));
         checkSound.setForeground(Color.decode(theme.button));
         checkSound.setSelected(soundToggle);
 
 //this is for menu theme
         JLabel themeTitle = new JLabel("Menu Colours");
         themeTitle.setBounds(66, 439,  404, 51);
-        themeTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+        themeTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         themeTitle.setForeground(Color.decode(theme.button));
-        themeTitle.setOpaque(true);
         settings.getContentPane().add(themeTitle);
 
         JLabel themeLabel = new JLabel("Pick a menu theme!");
@@ -154,7 +151,6 @@ public class Settings {
         themeLabel.setBounds(184, 508, 540, 50);
         themeLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         themeLabel.setForeground(Color.decode(theme.button));
-        themeLabel.setOpaque(true);
         settings.getContentPane().add(themeLabel);
 
         String[] themeChoices = { "Default", "Medieval", "Spooky", "Galactic"};
@@ -174,6 +170,7 @@ public class Settings {
         saveAndExit = new JButton("Save and Exit");
         saveAndExit.setAlignmentX(Component.CENTER_ALIGNMENT);
         saveAndExit.setBounds(515, 574, 250, 50);
+        saveAndExit.setFont(new Font("Bahnschrift", Font.BOLD, 18));
         saveAndExit.setBackground(Color.decode(theme.button));
         saveAndExit.setForeground(Color.decode(theme.background));
         settings.getContentPane().add(saveAndExit);
@@ -208,6 +205,7 @@ public class Settings {
                     if (soundToggle) {
                         menuInstance.stopBackgroundMusic();
                         menuInstance.playBackgroundMusic();
+                        menuInstance.updateScore();
                     }
                 }
 

@@ -37,7 +37,7 @@ public class Game implements KeyListener{
 
     JLabel promptAnswer;
 
-    double x;
+    double time;
 
     int score = 0;
 
@@ -240,11 +240,11 @@ public class Game implements KeyListener{
             }
         };
         
-        x = 1000;
+        time = 1000;
         if (hardMode) {
-            x = (((5000) / ((2 * score) + 6.5)) + 250);
+            time = (((5000) / ((2 * score) + 6.5)) + 250);
         }
-        Timer timer = new Timer((int) x ,taskPerformer);
+        Timer timer = new Timer((int) time ,taskPerformer);
         timer.setRepeats(true);
         timer.start();
     }
@@ -439,6 +439,8 @@ public class Game implements KeyListener{
                 playAgainFlag = false;
                 colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                 gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
+                Menu scoreUpdate = new Menu();
+                scoreUpdate.updateScore();
             }
         });
 

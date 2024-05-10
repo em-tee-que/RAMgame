@@ -8,5 +8,7 @@ public abstract class Theme {
 
     public String banner;
 
+    public String scoreTheme;
+
     public String song;
 }
