@@ -266,21 +266,18 @@ public class Menu {
                 while ((line = reader.readLine()) != null) {
                     scores.add(line);
                 }
-                // Display high scores
                 if (!scores.isEmpty()) {
                     Collections.sort(scores, (s1, s2) -> {
                         int score1 = Integer.parseInt(s1.split(";")[1].trim());
                         int score2 = Integer.parseInt(s2.split(";")[1].trim());
-                        return Integer.compare(score2, score1); // Sort descending
+                        return Integer.compare(score2, score1);
                     });
 
                     StringBuilder buildScore = new StringBuilder("<html>");
                     int rank = 1;
                     for (String score : scores) {
-                        // Split the score into name and score
                         String[] parts = score.split(";");
                         if (parts.length == 2) {
-                            // Append rank, player name, and score with increased space
                             buildScore.append(rank).append(getRankSuffix(rank)).append("&nbsp;&nbsp;-&nbsp;&nbsp;").append(parts[0].trim()).append("&nbsp;&nbsp;&nbsp;").append(parts[1].trim()).append("<br>");
                             rank++;
                         }

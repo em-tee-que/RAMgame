@@ -29,9 +29,13 @@ public class Game implements KeyListener{
 
     JFrame colourWindow;
     JButton butColour1;
+    JLabel but1;
     JButton butColour2;
+    JLabel but2;
     JButton butColour3;
+    JLabel but3;
     JButton butColour4;
+    JLabel but4;
 
     JLabel scoreLabel;
 
@@ -70,10 +74,8 @@ public class Game implements KeyListener{
         colourWindow.setIconImage(img.getImage());
         colourWindow.addKeyListener(this);
 
-
         scoreLabel = new JLabel();
         scoreLabel.setText("<html><center>SCORE: " + score + "</center></html>");
-        //scoreLabel.setFont(customFont.deriveFont(Font.BOLD, 15f));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setBounds(540, 20, 200, 50);
         scoreLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
@@ -119,6 +121,13 @@ public class Game implements KeyListener{
             }
         });
 
+        but1 = new JLabel("1");
+        but1.setHorizontalAlignment(SwingConstants.CENTER);
+        but1.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        colourWindow.getContentPane().add(but1);
+        but1.setBounds(315, 425, 50,50);
+        but1.setVisible(false);
+
         butColour2 = new JButton();
         butColour2.setSize(100, 100);
         butColour2.setBackground(Color.decode(scheme.colourHex2));
@@ -131,6 +140,13 @@ public class Game implements KeyListener{
                 answer(2);
             }
         });
+
+        but2 = new JLabel("2");
+        but2.setHorizontalAlignment(SwingConstants.CENTER);
+        but2.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        colourWindow.getContentPane().add(but2);
+        but2.setBounds(515, 425, 50,50);
+        but2.setVisible(false);
 
         butColour3 = new JButton();
         butColour3.setSize(100, 100);
@@ -145,6 +161,13 @@ public class Game implements KeyListener{
             }
         });
 
+        but3 = new JLabel("3");
+        but3.setHorizontalAlignment(SwingConstants.CENTER);
+        but3.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        colourWindow.getContentPane().add(but3);
+        but3.setBounds(715, 425, 50,50);
+        but3.setVisible(false);
+
         butColour4 = new JButton();
         butColour4.setSize(100, 100);
         butColour4.setBackground(Color.decode(scheme.colourHex4));
@@ -157,6 +180,13 @@ public class Game implements KeyListener{
                 answer(4);
             }
         });
+
+        but4 = new JLabel("4");
+        but4.setHorizontalAlignment(SwingConstants.CENTER);
+        but4.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        colourWindow.getContentPane().add(but4);
+        but4.setBounds(915, 425, 50,50);
+        but4.setVisible(false);
 
         colourWindow.setVisible(true);
 
@@ -171,9 +201,13 @@ public class Game implements KeyListener{
     public void nextRound() {
         promptAnswer.setVisible(false);
         butColour1.setVisible(false);
+        but1.setVisible(false);
         butColour2.setVisible(false);
+        but2.setVisible(false);
         butColour3.setVisible(false);
+        but3.setVisible(false);
         butColour4.setVisible(false);
+        but4.setVisible(false);
 
         answerTerm = 0;
         //don't allow same colour twice in a row
@@ -203,9 +237,14 @@ public class Game implements KeyListener{
                     //make the answer button visible;
                     promptAnswer.setVisible(true);
                     butColour1.setVisible(true);
+                    but1.setVisible(true);
                     butColour2.setVisible(true);
+                    but2.setVisible(true);
                     butColour3.setVisible(true);
+                    but3.setVisible(true);
                     butColour4.setVisible(true);
+                    but4.setVisible(true);
+
                     return;
                 }
 
@@ -234,7 +273,7 @@ public class Game implements KeyListener{
                     }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex4));
                 }
-                colourWindow.invalidate(); //make the colourwindow repaint to screen
+                colourWindow.invalidate(); //makes the colourwindow repaint to screen
                 
                 colourCounter++;
                 
@@ -339,8 +378,6 @@ public class Game implements KeyListener{
         else if (third == null || score > Integer.parseInt(third[1])) {
             rank =3;
         }
-
-        System.out.println(rank);
         
         String playerName = "";
         String scoreData = "";

@@ -29,6 +29,7 @@ public class Settings {
     Theme selectedTheme;
 
     boolean hardMode;
+    boolean newSound;
 
     boolean soundToggle;
     String musicFilePath;
@@ -97,21 +98,21 @@ public class Settings {
 
 //this is hard mode section
         JLabel hardTitle = new JLabel("Hard Mode");
-        hardTitle.setBounds(66, 171,  404, 51);
+        hardTitle.setBounds(66, 439,  404, 51);
         hardTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         hardTitle.setForeground(Color.decode(theme.button));
         settings.getContentPane().add(hardTitle);
 
-        JLabel hardLabel = new JLabel("Up for a challenge?");
+        JLabel hardLabel = new JLabel("Game speeds up as you play.");
         hardLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hardLabel.setBounds(184, 238, 540, 50);
+        hardLabel.setBounds(184, 508, 540, 50);
         hardLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         hardLabel.setForeground(Color.decode(theme.button));
         settings.getContentPane().add(hardLabel);
 
         JCheckBox checkHard = new JCheckBox("   HARD MODE >:D");
         settings.add(checkHard);
-        checkHard.setBounds(823, 238, 205, 50);
+        checkHard.setBounds(823, 506, 205, 50);
         checkHard.setFont(new Font("Bahnschrift", Font.BOLD, 20));
         checkHard.setBackground(Color.decode(theme.background));
         checkHard.setForeground(Color.decode(theme.button));
@@ -124,7 +125,7 @@ public class Settings {
         soundTitle.setForeground(Color.decode(theme.button));
         settings.getContentPane().add(soundTitle);
 
-        JLabel soundLabel = new JLabel("Menu Music and Game Sound");
+        JLabel soundLabel = new JLabel("Toggle menu music and game sound.");
         soundLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         soundLabel.setBounds(184, 372, 540, 50);
         soundLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
@@ -141,14 +142,14 @@ public class Settings {
 
 //this is for menu theme
         JLabel themeTitle = new JLabel("Menu Colours");
-        themeTitle.setBounds(66, 439,  404, 51);
+        themeTitle.setBounds(66, 171,  404, 51);
         themeTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
         themeTitle.setForeground(Color.decode(theme.button));
         settings.getContentPane().add(themeTitle);
 
         JLabel themeLabel = new JLabel("Pick a menu theme!");
         themeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        themeLabel.setBounds(184, 508, 540, 50);
+        themeLabel.setBounds(184, 238, 540, 50);
         themeLabel.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
         themeLabel.setForeground(Color.decode(theme.button));
         settings.getContentPane().add(themeLabel);
@@ -157,7 +158,7 @@ public class Settings {
 
         JComboBox<String> comboTheme = new JComboBox<String>(themeChoices);
 
-        comboTheme.setBounds(823, 506, 205, 50);
+        comboTheme.setBounds(823, 238, 205, 50);
         comboTheme.setAlignmentX(Component.CENTER_ALIGNMENT);
         comboTheme.setSelectedItem(selectedTheme.themeName);
         comboTheme.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
@@ -185,7 +186,9 @@ public class Settings {
                 hardMode = (checkHard.isSelected());
 
                 //save sound preferences
-                soundToggle = (checkSound.isSelected());
+                newSound = (checkSound.isSelected());
+                boolean soundChanged = (newSound != soundToggle);
+                soundToggle = newSound;
 
                 //save theme preferences
                 String themeName = (String) comboTheme.getSelectedItem();
@@ -194,23 +197,32 @@ public class Settings {
 
                 //exit settings
                 try {
-                    menuInstance.mainMenu(selectedColourScheme, hardMode, soundToggle, selectedTheme);
+                    menuInstance.mainMenu(selectedColourScheme, hardMode, newSound, selectedTheme);
                     settings.dispatchEvent(new WindowEvent(settings, WindowEvent.WINDOW_CLOSING));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
 
-                //play new music
+
+                //maybe add if statement for theme changed, stop music stop start same theme
                 if (themeChanged) {
-                    if (soundToggle) {
+                    if (newSound) {
                         menuInstance.stopBackgroundMusic();
                         menuInstance.playBackgroundMusic();
                         menuInstance.updateScore();
                     }
+                    else if (!newSound) {
+                        menuInstance.stopBackgroundMusic();
+                        menuInstance.updateScore();
+                    }
                 }
-
-                if (!soundToggle) {
-                    menuInstance.stopBackgroundMusic();
+                else if (!themeChanged) {
+                    if (newSound && soundChanged) {
+                        menuInstance.playBackgroundMusic();
+                    }
+                    else if (!newSound) {
+                        menuInstance.stopBackgroundMusic();
+                    }
                 }
             }
 
