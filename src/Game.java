@@ -98,6 +98,7 @@ public class Game implements KeyListener{
                         Menu mainMenu = Menu.getInstance();
                         mainMenu.mainMenu(scheme, isHard, soundToggle, theme);
                         mainMenu.playBackgroundMusic();
+                        mainMenu.updateScore();
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -439,8 +440,8 @@ public class Game implements KeyListener{
                 playAgainFlag = false;
                 colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                 gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
-                Menu scoreUpdate = new Menu();
-                scoreUpdate.updateScore();
+                Menu mainMenu = Menu.getInstance();
+                mainMenu.updateScore();
             }
         });
 
