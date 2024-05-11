@@ -343,28 +343,32 @@ public class Game implements KeyListener{
                 delayTimer.setRepeats(false);
                 delayTimer.start();
             }
-            //otherwise, it means they still have more answers left for the current sequence
+            //otherwise, it means they still have more answer terms left for the current sequence
             else {
                 answerTerm++;
             }
         }
         else {
-            //has to be out here because this is what prevents spamming incorrect button from opening gameOver multiple times, cant have delay
+            //has to be out here because this is what prevents spamming incorrect button from opening gameOver multiple times, can't have delay
             askingPlayAgain = true;
+            //timer delay before ending the game
             Timer delayTimer = new Timer(300, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     endGame();
                 }
             });
+            //ensure the timer only triggers once
             delayTimer.setRepeats(false);
             delayTimer.start();
         }
     }
 
     public void endGame() {
+        //reset play again flag
         playAgainFlag = false;
 
+        //if sound is enabled, play the lose sound effect
         if (soundToggle) {
             SoundUtility beep = new SoundUtility();
             beep.playSound(SoundUtility.Sounds.bad);
@@ -383,6 +387,7 @@ public class Game implements KeyListener{
         if (file.exists()) {
             Scanner reader;
             try {
+                //read from file and store the top three scores
                 reader = new Scanner(file);
                 if (reader.hasNext()) {
                     first = reader.nextLine().split(";");
@@ -413,6 +418,7 @@ public class Game implements KeyListener{
         
         String playerName = "";
         String scoreData = "";
+        //check if the current score qualifies for a high score position
         //if its a high score, ask for name
         if (rank == 1) {
             playerName = JOptionPane.showInputDialog("High score! You made first place! Enter your name:");
