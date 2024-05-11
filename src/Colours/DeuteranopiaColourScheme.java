@@ -3,6 +3,7 @@ package Colours;
 public class DeuteranopiaColourScheme extends ColourScheme{
     //green-blind
     public DeuteranopiaColourScheme() {
+        //a colour scheme that is accessible to those with deuteranopia colourblindness
         name = "Deuteranopia";
         colourHex1 = "#0130A2";
         colourHex2 = "#DCC901";

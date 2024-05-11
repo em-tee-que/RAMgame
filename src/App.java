@@ -1,3 +1,4 @@
+// importing input/output readers and the different colour schemes and themes
 import java.io.File;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ import Themes.Theme;
 public class App {
     public static void main(String[] args) throws Exception {
 
-        //deafult values, below if saved preferences file alreaady exists, will be overwritten
+        //default values, below if saved preferences file alreaady exists, will be overwritten
         ColourScheme scheme = new DefaultColourScheme();
         boolean mode = false;
         boolean sound = true;
