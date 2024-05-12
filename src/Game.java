@@ -1,3 +1,4 @@
+// importing libraries and packages for the swing application and other utilities
 import java.awt.Color;
 import java.awt.Font;
 import java.util.*;
@@ -8,15 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import javax.swing.Timer;
-
+//importing colour schemes and themes
 import Colours.ColourScheme;
 import Sounds.SoundUtility;
 import Themes.Theme;
@@ -26,7 +26,7 @@ public class Game implements KeyListener{
 
     boolean playAgainFlag = false;
     boolean askingPlayAgain = false;
-
+//setting up variables that represent the game window, buttons, values that will be used, etc.
     JFrame colourWindow;
     JButton butColour1;
     JLabel but1;
@@ -55,18 +55,22 @@ public class Game implements KeyListener{
     Integer answerTerm;
 
     Font customFont;
-
+    //runGame method  
     public void runGame(ColourScheme selectedColourScheme, boolean isHard, boolean isSound, Theme selectedTheme) {
- 
+
+        //defining the settings as those determined by the user
         scheme = selectedColourScheme;
         hardMode = isHard;
         soundToggle = isSound;
         theme = selectedTheme;
 
+        //setting the score to 0
         score = 0;
 
+        //setting custom taskbar icon
         ImageIcon img = new ImageIcon("src/Images/icon.png");
-
+        
+        //setting up the game window's title, size, etc.
         colourWindow = new JFrame("You are playing!");
         colourWindow.setSize(1280, 720);
         colourWindow.setLocationRelativeTo(null);
@@ -74,6 +78,7 @@ public class Game implements KeyListener{
         colourWindow.setIconImage(img.getImage());
         colourWindow.addKeyListener(this);
 
+        //setting up the current score label's font, colour, size, etc. and adding it to colourWindow
         scoreLabel = new JLabel();
         scoreLabel.setText("<html><center>SCORE: " + score + "</center></html>");
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,6 +89,7 @@ public class Game implements KeyListener{
         scoreLabel.setForeground(Color.decode(scheme.labelForeHex));
         colourWindow.getContentPane().add(scoreLabel);
 
+        //setting up the answer prompt and adding it to colourWindow
         promptAnswer = new JLabel();
         promptAnswer.setText("What was the sequence?");
         promptAnswer.setFont(new Font("Bahnschrift", Font.PLAIN, 30));
@@ -92,6 +98,7 @@ public class Game implements KeyListener{
         promptAnswer.setVisible(false);
         colourWindow.getContentPane().add(promptAnswer);
 
+        //ensuring that if the game window is closed prematurely, the main menu window is reopened.
         colourWindow.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -107,7 +114,7 @@ public class Game implements KeyListener{
                 }
             }
         });
-        
+        //button 1's position, size, colour (defined by the user-selected colour theme), etc
         butColour1 = new JButton();
         butColour1.setSize(100, 100);
         butColour1.setBackground(Color.decode(scheme.colourHex1));
@@ -115,12 +122,15 @@ public class Game implements KeyListener{
         butColour1.setLocation(290,310);
         butColour1.setVisible(false);
         butColour1.setFocusable(false);
+        
+        //making the input of button 1 result in an answer value of 1 
         butColour1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 answer(1);
             }
         });
-
+        
+        //a label that denotes the number of the button
         but1 = new JLabel("1");
         but1.setHorizontalAlignment(SwingConstants.CENTER);
         but1.setFont(new Font("Bahnschrift", Font.BOLD, 14));
@@ -128,6 +138,7 @@ public class Game implements KeyListener{
         but1.setBounds(315, 425, 50,50);
         but1.setVisible(false);
 
+        //button 2's position, size, colour (defined by the user-selected colour theme), etc
         butColour2 = new JButton();
         butColour2.setSize(100, 100);
         butColour2.setBackground(Color.decode(scheme.colourHex2));
@@ -135,12 +146,13 @@ public class Game implements KeyListener{
         butColour2.setLocation(490, 310);
         butColour2.setVisible(false);
         butColour2.setFocusable(false);
+        //making the input of button 2 result in an answer value of 2 
         butColour2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 answer(2);
             }
         });
-
+        //a label that denotes the number of the button
         but2 = new JLabel("2");
         but2.setHorizontalAlignment(SwingConstants.CENTER);
         but2.setFont(new Font("Bahnschrift", Font.BOLD, 14));
@@ -148,6 +160,7 @@ public class Game implements KeyListener{
         but2.setBounds(515, 425, 50,50);
         but2.setVisible(false);
 
+        //button 3's position, size, colour (defined by the user-selected colour theme), etc
         butColour3 = new JButton();
         butColour3.setSize(100, 100);
         butColour3.setBackground(Color.decode(scheme.colourHex3));
@@ -155,12 +168,14 @@ public class Game implements KeyListener{
         butColour3.setLocation(690,310);
         butColour3.setVisible(false);
         butColour3.setFocusable(false);
+        //making the input of button 3 result in an answer value of 3
         butColour3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 answer(3);
             }
         });
 
+        //a label that denotes the number of the button
         but3 = new JLabel("3");
         but3.setHorizontalAlignment(SwingConstants.CENTER);
         but3.setFont(new Font("Bahnschrift", Font.BOLD, 14));
@@ -168,6 +183,7 @@ public class Game implements KeyListener{
         but3.setBounds(715, 425, 50,50);
         but3.setVisible(false);
 
+        //button 4's position, size, colour (defined by the user-selected colour theme), etc
         butColour4 = new JButton();
         butColour4.setSize(100, 100);
         butColour4.setBackground(Color.decode(scheme.colourHex4));
@@ -175,12 +191,14 @@ public class Game implements KeyListener{
         butColour4.setLocation(890,310);
         butColour4.setVisible(false);
         butColour4.setFocusable(false);
+        //making the input of button 4 result in an answer value of 4
         butColour4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 answer(4);
             }
         });
 
+        //a label that denotes the number of the button
         but4 = new JLabel("4");
         but4.setHorizontalAlignment(SwingConstants.CENTER);
         but4.setFont(new Font("Bahnschrift", Font.BOLD, 14));
@@ -188,17 +206,19 @@ public class Game implements KeyListener{
         but4.setBounds(915, 425, 50,50);
         but4.setVisible(false);
 
+        //makes the game window visible
         colourWindow.setVisible(true);
 
+        //creates a new list "sequence," which stores the answer values correspending to the colours shown, in the sequence they appear.
         sequence = new LinkedList<Integer>();
 
         sequence.add((int)(Math.random()*4 + 1));
-       
+       //calling the nextRound method to begin the next round
         nextRound();
     }
-       
 
     public void nextRound() {
+        //hiding the buttons at the start of a round
         promptAnswer.setVisible(false);
         butColour1.setVisible(false);
         but1.setVisible(false);
@@ -208,7 +228,8 @@ public class Game implements KeyListener{
         but3.setVisible(false);
         butColour4.setVisible(false);
         but4.setVisible(false);
-
+        
+        //answerTerm keeps track of which answer the user is on.
         answerTerm = 0;
         //don't allow same colour twice in a row
         int newColour = (int)(Math.random()*4 + 1);
@@ -222,16 +243,19 @@ public class Game implements KeyListener{
         playAgainFlag = false;
         doRound();
     }
- 
+    
     int colourCounter = 0;
 
     public void doRound(){
+        //reset the colour counter
         colourCounter = 0;    
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                //if the entire sequence has been displayed
                 if (colourCounter == sequence.size()) {
+                    //set background colour to white
                     colourWindow.getContentPane().setBackground(Color.white);
-
+                    //stop timer
                     ((Timer)evt.getSource()).stop();
 
                     //make the answer button visible;
@@ -247,7 +271,8 @@ public class Game implements KeyListener{
 
                     return;
                 }
-
+                //play the corresponding beep sound that matches the colour being shown
+                //beep for colour 1
                 if (sequence.get(colourCounter) == 1){
                     if (soundToggle) {
                         SoundUtility beep = new SoundUtility();
@@ -274,29 +299,35 @@ public class Game implements KeyListener{
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex4));
                 }
                 colourWindow.invalidate(); //makes the colourwindow repaint to screen
-                
+                //increasing colour counter
                 colourCounter++;
                 
             }
         };
-        
+        //default time between colour flashes
         time = 1000;
+
+        //if the game is set to hard mode, the time between flashes will decreased based on a rational function
         if (hardMode) {
             time = (((5000) / ((2 * score) + 6.5)) + 250);
         }
+        //starts the time
         Timer timer = new Timer((int) time ,taskPerformer);
         timer.setRepeats(true);
         timer.start();
     }
-
+    //method to check if the user's answer matches the next term in the sequence
     private void checkAnswer(int buttonChosen){
+        //exits the method if user wants to play again
         if (askingPlayAgain) {
             return;
         }
-
+        //if the player's answer matches the next term in the sequence
         if (sequence.get(answerTerm) == buttonChosen){
             int totalTerms = (sequence.size() - 1);
+            //if the user answers the final term in the sequence
             if (answerTerm == totalTerms){
+                // increase score, play a success sound, update the score label, move to the next round after a delay
                 score ++;
                 Timer delayTimer = new Timer(500, new ActionListener() {
                     @Override
@@ -312,27 +343,32 @@ public class Game implements KeyListener{
                 delayTimer.setRepeats(false);
                 delayTimer.start();
             }
+            //otherwise, it means they still have more answer terms left for the current sequence
             else {
                 answerTerm++;
             }
         }
         else {
-            //has to be out here because this is what prevents spamming incorrect button from opening gameOver multiple times, cant have delay
+            //has to be out here because this is what prevents spamming incorrect button from opening gameOver multiple times, can't have delay
             askingPlayAgain = true;
+            //timer delay before ending the game
             Timer delayTimer = new Timer(300, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     endGame();
                 }
             });
+            //ensure the timer only triggers once
             delayTimer.setRepeats(false);
             delayTimer.start();
         }
     }
 
     public void endGame() {
+        //reset play again flag
         playAgainFlag = false;
 
+        //if sound is enabled, play the lose sound effect
         if (soundToggle) {
             SoundUtility beep = new SoundUtility();
             beep.playSound(SoundUtility.Sounds.bad);
@@ -351,6 +387,7 @@ public class Game implements KeyListener{
         if (file.exists()) {
             Scanner reader;
             try {
+                //read from file and store the top three scores
                 reader = new Scanner(file);
                 if (reader.hasNext()) {
                     first = reader.nextLine().split(";");
@@ -381,6 +418,7 @@ public class Game implements KeyListener{
         
         String playerName = "";
         String scoreData = "";
+        //check if the current score qualifies for a high score position
         //if its a high score, ask for name
         if (rank == 1) {
             playerName = JOptionPane.showInputDialog("High score! You made first place! Enter your name:");

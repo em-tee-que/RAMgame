@@ -1,3 +1,4 @@
+// importing libraries and packages for the swing application and other utilities
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
+//importing colour schemes and themes
 import Colours.ColourScheme;
 import Themes.Theme;
 
@@ -18,10 +20,13 @@ public class GameStarting {
     //flags if they going back to menu, stops music from playing over itself
     boolean backToMenu;
 
+    //method that starts the game
     public void beginGame(ColourScheme selectedColourScheme, boolean isHard, boolean isSound, Theme selectedTheme) throws Exception{
 
+        //setting custom taskbar icon
         ImageIcon img = new ImageIcon("src/Images/icon.png");
 
+        //setting up the pre-game ready prompt window's size, location, bg colour, etc.
         JFrame checkReady = new JFrame("...Ready For It?");
         checkReady.setSize(1280, 720);
         checkReady.setLocationRelativeTo(null);
@@ -29,6 +34,7 @@ public class GameStarting {
         checkReady.getContentPane().setBackground(Color.decode(selectedTheme.background));
         checkReady.setIconImage(img.getImage());
 
+        //the instructions for the game that are shown pre-game
         JLabel instructions = new JLabel();
         instructions.setHorizontalAlignment(SwingConstants.CENTER);
         instructions.setText("<html><div style='text-align: center;'>You will be shown a sequence of colours, starting <br>with 2 and increasing by 1 each time.<br><br>Are you ready?</html>");
@@ -37,6 +43,7 @@ public class GameStarting {
         instructions.setForeground(Color.decode(selectedTheme.button));
         checkReady.getContentPane().add(instructions);
 
+        //ready button dimensions, colour, position, etc.
         JButton ready = new JButton("<html><center>I'M READY!</center></html>");
         checkReady.add(ready);
         ready.setBounds(515, 360, 250, 50);
@@ -47,6 +54,7 @@ public class GameStarting {
         ready.setBorderPainted(false);
         ready.setFocusPainted(false);
 
+        //if the button is pressed, run a new instance of the game method
         ready.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 try {
@@ -60,6 +68,7 @@ public class GameStarting {
             }
         });
 
+        //attributes for the button meant for if the user decides they want to go back to menu
         JButton notReady = new JButton("<html><center>MENU</center></html>");
         checkReady.add(notReady);
         notReady.setBounds(515, 460, 250, 50);
@@ -70,6 +79,7 @@ public class GameStarting {
         notReady.setBorderPainted(false);
         notReady.setFocusPainted(false);
 
+        //if the button is pressed, return back to the main menu
         notReady.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 try {
@@ -84,8 +94,10 @@ public class GameStarting {
             }
         });
 
+        //display the pre-game ready prompt window
         checkReady.setVisible(true);
 
+        //if the pre-game ready prompt window is prematurely closed, return to the main menu
         checkReady.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
