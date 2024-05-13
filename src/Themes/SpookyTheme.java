@@ -1,5 +1,7 @@
 package Themes;
 
+//check the abstract class that this extends (Theme) for commenting
+
 public class SpookyTheme extends Theme {
     public SpookyTheme() {
         themeName = "Spooky";

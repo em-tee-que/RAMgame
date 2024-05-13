@@ -1,8 +1,12 @@
 package Colours;
+
+//check the abstract class that this extends (ColourScheme) for commenting
+
 public class DefaultColourScheme extends ColourScheme{
     public DefaultColourScheme() {
         //the default colour scheme (red, green, blue, yellow)
         name = "Default";
+        
         colourHex1 = "#FF595E";
         colourHex2 = "#FFCA3A";
         colourHex3 = "#8AC926";

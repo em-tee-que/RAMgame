@@ -1,9 +1,12 @@
 package Colours;
 
+//check the abstract class that this extends (ColourScheme) for commenting
+
 public class MTKColourScheme extends ColourScheme{
     public MTKColourScheme() {
         //maheen's custom colour scheme
         name = "MTK";
+        
         colourHex1 = "#222A68";
         colourHex2 = "#EE6C4D";
         colourHex3 = "#654597";

@@ -1,5 +1,7 @@
 package Themes;
 
+//check the abstract class that this extends (Theme) for commenting
+
 public class MedievalTheme extends Theme{
     public MedievalTheme() {
         themeName = "Medieval";

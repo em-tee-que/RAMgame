@@ -12,6 +12,7 @@ import javax.sound.sampled.LineUnavailableException;
 public class SoundUtility {
 
     //making list of things that can act like global variables
+    //we can now say "beep.playSound(SoundUtility.Sounds.colour1)" in game, using the name colour1 to refer to a wav file (logic below)!
     public enum Sounds {
         colour1,
         colour2,
@@ -23,9 +24,12 @@ public class SoundUtility {
 
     private AudioInputStream audioStream;
     
+    //method to play sound
     public void playSound(Sounds soundType) {
 
+        //basically gets the term of the enum that corresponds to the sound we want, we add 1 below because the enum is ordinal 0 but our wav files start at 1
         int soundInt = soundType.ordinal();
+        //put the number into the string path -- this works because of our naming convention :)
         InputStream sound = getClass().getResourceAsStream("/sounds/beep-" + (soundInt+1) + ".wav");
 
         try {
@@ -35,6 +39,7 @@ public class SoundUtility {
             System.exit(1);
         }
 
+        //start the clip
         Clip clip;
         try {
             clip = AudioSystem.getClip();
