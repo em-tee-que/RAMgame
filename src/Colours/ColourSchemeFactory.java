@@ -4,6 +4,7 @@ package Colours;
 //any time we need to do this (saving settings, reading file on open) we use this factory :D
 public class ColourSchemeFactory {
     public static ColourScheme getColourScheme(String name) {
+        //if name is default, return default... etc.
         if (name.equals("Default")){
             return new DefaultColourScheme();
         }

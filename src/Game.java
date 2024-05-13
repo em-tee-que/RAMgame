@@ -21,9 +21,10 @@ import Colours.ColourScheme;
 import Sounds.SoundUtility;
 import Themes.Theme;
 
-
+//implements key listener because key input is implemented
 public class Game implements KeyListener{
 
+//settings up flag variables
     boolean playAgainFlag = false;
     boolean askingPlayAgain = false;
 //setting up variables that represent the game window, buttons, values that will be used, etc.
@@ -54,7 +55,7 @@ public class Game implements KeyListener{
     List<Integer> sequence;
     Integer answerTerm;
 
-    Font customFont;
+    //game is passed all of the parameters so it can used the selected colour scheme, hard mode toggle, and sound toggle
     //runGame method  
     public void runGame(ColourScheme selectedColourScheme, boolean isHard, boolean isSound, Theme selectedTheme) {
 
@@ -211,12 +212,15 @@ public class Game implements KeyListener{
 
         //creates a new list "sequence," which stores the answer values correspending to the colours shown, in the sequence they appear.
         sequence = new LinkedList<Integer>();
-
+        //add an int 1-4 to the list
         sequence.add((int)(Math.random()*4 + 1));
+
        //calling the nextRound method to begin the next round
         nextRound();
     }
 
+    //the next round method hides the buttons from when the user answered, resets the answer term counter, and adds a colour to the sequence without letting the same colour be added consecutively (it would be too confusing)
+    //this method is basically an intermediate step between round end and round start
     public void nextRound() {
         //hiding the buttons at the start of a round
         promptAnswer.setVisible(false);
@@ -237,18 +241,23 @@ public class Game implements KeyListener{
         {
             newColour = (int)(Math.random()*4 + 1);
         }
+        //add the new colour to sequence
         sequence.add(newColour);
 
         //reseting the flag that stops game over window from opening multiple times
         playAgainFlag = false;
+
+        //call do round
         doRound();
     }
     
+    //make the colour counter variable which is used to count which term of the sequence is being displayed
     int colourCounter = 0;
 
     public void doRound(){
         //reset the colour counter
-        colourCounter = 0;    
+        colourCounter = 0;
+        //this portion is put in action listener so that the timer (below) can put time in between colour changes
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //if the entire sequence has been displayed
@@ -258,7 +267,7 @@ public class Game implements KeyListener{
                     //stop timer
                     ((Timer)evt.getSource()).stop();
 
-                    //make the answer button visible;
+                    //make the answer buttons & prompt visible;
                     promptAnswer.setVisible(true);
                     butColour1.setVisible(true);
                     but1.setVisible(true);
@@ -279,18 +288,21 @@ public class Game implements KeyListener{
                         beep.playSound(SoundUtility.Sounds.colour1);
                     }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex1));
+                //beep for colour 2
                 } else if (sequence.get(colourCounter) == 2){
                     if (soundToggle) {
                         SoundUtility beep = new SoundUtility();
                         beep.playSound(SoundUtility.Sounds.colour2);
                     }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex2));
+                //beep for colour 3
                 } else if (sequence.get(colourCounter) == 3){
                     if (soundToggle) {
                         SoundUtility beep = new SoundUtility();
                         beep.playSound(SoundUtility.Sounds.colour3);
                     }
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex3));
+                //beep for colour 4
                 } else {
                     if (soundToggle) {
                         SoundUtility beep = new SoundUtility();
@@ -299,6 +311,7 @@ public class Game implements KeyListener{
                     colourWindow.getContentPane().setBackground(Color.decode(scheme.colourHex4));
                 }
                 colourWindow.invalidate(); //makes the colourwindow repaint to screen
+
                 //increasing colour counter
                 colourCounter++;
                 
@@ -308,26 +321,31 @@ public class Game implements KeyListener{
         time = 1000;
 
         //if the game is set to hard mode, the time between flashes will decreased based on a rational function
+            //in this rational function the independent variable (x) is represented by the score variable... so on round 1 the x = 0
+                //the y-int of this function therefore represents the milliseconds given on round 1, approx 1000 (or 1 sec)
+                //the function's horizontal asymptote is at y = 250, so the colours never switch faster than a quarter of a second (we determined this is the hardest time that is still playable)
+                //this rational function allows us to have an infinitely scaling time system
         if (hardMode) {
             time = (((5000) / ((2 * score) + 6.5)) + 250);
         }
-        //starts the time
+        //starts the timer
         Timer timer = new Timer((int) time ,taskPerformer);
         timer.setRepeats(true);
         timer.start();
     }
     //method to check if the user's answer matches the next term in the sequence
     private void checkAnswer(int buttonChosen){
-        //exits the method if user wants to play again
+        //if the user got it wrong already, dont do any of this... stops the player as soon as they are wrong so that game over window doesnt come up many times
         if (askingPlayAgain) {
             return;
         }
         //if the player's answer matches the next term in the sequence
         if (sequence.get(answerTerm) == buttonChosen){
+            //counter for total terms in the sequence
             int totalTerms = (sequence.size() - 1);
             //if the user answers the final term in the sequence
             if (answerTerm == totalTerms){
-                // increase score, play a success sound, update the score label, move to the next round after a delay
+                // increase score, play a success sound, update the score label, move to the next round after a delay (so no sounds overlap)
                 score ++;
                 Timer delayTimer = new Timer(500, new ActionListener() {
                     @Override
@@ -343,13 +361,13 @@ public class Game implements KeyListener{
                 delayTimer.setRepeats(false);
                 delayTimer.start();
             }
-            //otherwise, it means they still have more answer terms left for the current sequence
+            //otherwise, it means they still have more answer terms left for the current sequence, so increase the counter for which term they're answering and let them press another button
             else {
                 answerTerm++;
             }
         }
         else {
-            //has to be out here because this is what prevents spamming incorrect button from opening gameOver multiple times, can't have delay
+            //has to be here because this is what prevents spamming incorrect button from opening gameOver multiple times, can't have delay
             askingPlayAgain = true;
             //timer delay before ending the game
             Timer delayTimer = new Timer(300, new ActionListener() {
@@ -364,6 +382,7 @@ public class Game implements KeyListener{
         }
     }
 
+    //what happens when they lose
     public void endGame() {
         //reset play again flag
         playAgainFlag = false;
@@ -379,7 +398,7 @@ public class Game implements KeyListener{
         String path = (System.getProperty("user.dir") + "\\savedScores.txt");
         File file = new File(path);
 
-        //must set to null at first otherwise code thinks they may not be set
+        //must set to null at first otherwise code thinks they may not be set (if file doesn't exist)
         String[] first = null;
         String[] second = null;
         String[] third = null;
@@ -416,40 +435,52 @@ public class Game implements KeyListener{
             rank =3;
         }
         
+        //varibles for player score data
         String playerName = "";
         String scoreData = "";
         //check if the current score qualifies for a high score position
-        //if its a high score, ask for name
+    //if its a high score, ask for name
+        //player is #1
         if (rank == 1) {
             playerName = JOptionPane.showInputDialog("High score! You made first place! Enter your name:");
 
             scoreData = (playerName + ";" + score);
+        //these statements account for if only first exists and second doesn't or otherwise
             if (first != null) {
+                //first gets kicked to second
                 scoreData += "\n" + first[0] + ";" + first[1];
             }
             if (second != null) {
+                //second becomes third
                 scoreData += "\n" + second[0] + ";" + second[1];
             }
         }
+        //player is #2
         else if (rank == 2) {
             playerName = JOptionPane.showInputDialog("High score! You're in second! Enter your name:");
 
             scoreData = (first[0] + ";" + first[1] + "\n" + playerName + ";" + score);
+            //acounts for if there is no second place
             if (second != null) {
+                //second becomes third :/
                 scoreData +=  "\n" + second[0] + ";" + second[1];
             }
 
         }
+        //player is #3
         else if (rank == 3) {
             playerName = JOptionPane.showInputDialog("High score! Third overall, not too shabby! Enter your name:");
 
+            //no need for ifs, cause if they're third then we know first and second do indeed exist
             scoreData = (first[0] + ";" + first[1] + "\n" + second[0] + ";" + second[1] + "\n" + playerName + ";" + score);
         }
 
         File scoreFile = new File(path);
 
+        //if they are in top 3 scores
         if (scoreData != "") {
             try {
+                //add them to the scores! :D
                 FileWriter f2 = new FileWriter(scoreFile, false);
                 f2.write(scoreData);
                 f2.close();
@@ -458,8 +489,10 @@ public class Game implements KeyListener{
                 }
         }
 
+        //give game over JFrame the cool icon
         ImageIcon img = new ImageIcon("src/Images/icon.png");
 
+        //make game over JFrame
         JFrame gameOver = new JFrame("Oh no!");
         gameOver.setSize(1280, 720);
         gameOver.setLocationRelativeTo(null);
@@ -467,6 +500,7 @@ public class Game implements KeyListener{
         gameOver.getContentPane().setBackground(Color.decode(theme.background));
         gameOver.setIconImage(img.getImage());
 
+        //add a label informing them that they suck
         JLabel youLost = new JLabel();
         youLost.setHorizontalAlignment(SwingConstants.CENTER);
         youLost.setText("<html><div style='text-align: center;'>Game over! Your score was " + score + "!<br><br> Would you like to play again?</html>");
@@ -475,6 +509,7 @@ public class Game implements KeyListener{
         youLost .setForeground(Color.decode(theme.button));
         gameOver.getContentPane().add(youLost);
 
+        //indomitable spirit
         JButton yes = new JButton("<html><center>YES</html></center>");
         gameOver.add(yes);
         yes.setBounds(515, 360, 250, 50);
@@ -485,12 +520,16 @@ public class Game implements KeyListener{
         yes.setBorderPainted(false);
         yes.setFocusPainted(false);
 
+        //what happens when they click the yes button
         yes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 try {
+                    //set play again flag to true so that when the old game window closes, menu doesn't open due to the window listener
                     playAgainFlag = true;
+                    //call game starting to start new game
                     GameStarting begin = new GameStarting();
                     begin.beginGame(scheme, hardMode, soundToggle, theme);
+                    //close these windows
                     colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                     gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
 
@@ -500,6 +539,7 @@ public class Game implements KeyListener{
             }
         });
 
+        //loser quitter button
         JButton no = new JButton("<html><center>NO THANKS</html></center>");
         gameOver.add(no);
         no.setBounds(515, 460, 250, 50);
@@ -510,26 +550,33 @@ public class Game implements KeyListener{
         no.setBorderPainted(false);
         no.setFocusPainted(false);
 
+        //what happens when they press no
         no.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                //they are not playing again >:(
                 playAgainFlag = false;
+                //close game & game over windows
                 colourWindow.dispatchEvent(new WindowEvent(colourWindow, WindowEvent.WINDOW_CLOSING));
                 gameOver.dispatchEvent(new WindowEvent(gameOver, WindowEvent.WINDOW_CLOSING));
+                //make main menu update score
                 Menu mainMenu = Menu.getInstance();
                 mainMenu.updateScore();
             }
         });
 
+        //make game over visible
         gameOver.setVisible(true);
 
+        //reset answer term
         answerTerm = 0;
-
     }
 
+    //use key listener! they can press keys 1-4 to play the game!
     @Override
     public void keyPressed(KeyEvent e) {
         String pressedKey = String.valueOf(e.getKeyChar());
         if (pressedKey.equals("1")) {
+            //just call doClick to simulate button press!
             butColour1.doClick();
         }
         else if (pressedKey.equals("2")) {
@@ -543,7 +590,7 @@ public class Game implements KeyListener{
         }
     }
 
-    //forced to override this cause class implements keylistener :/, just leave empty
+//forced to override these cause class implements keylistener, just leave empty
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -552,6 +599,7 @@ public class Game implements KeyListener{
     public void keyReleased(KeyEvent e) {
     }
 
+    //this is when they answer a specific number (corresponding to the colour button they chose), it plays the corresponding sound and then calls check answer
     public void answer(int answerValue) {
         SoundUtility beep = new SoundUtility();
 
@@ -567,6 +615,8 @@ public class Game implements KeyListener{
         else if (soundToggle) {
             beep.playSound(SoundUtility.Sounds.colour4);
         }
+
+        //check the answer
         checkAnswer(answerValue);
     }
 }

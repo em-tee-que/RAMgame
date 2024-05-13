@@ -1,34 +1,21 @@
 // importing libraries and packages for the Swing application and other utilities
 //note that going forward, "attributes" will refer to the defining of an image/button/jframe/anything's attributes such as it's size, position, background colour, etc.
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import Colours.ColourScheme;
 import Themes.Theme;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.*;
+import java.util.*;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.sound.sampled.*;
 public class Menu {
 
+//in class we define the variables that need to be used in multiple methods so they are accessible
+    //to avoid music conflicts we use one instance of menu in the program
     private static Menu instance;
-
     Menu() {}
 
     //variables to store game settings
@@ -65,7 +52,9 @@ public class Menu {
         return instance;
     }
 
+    //this method, which is what's called when we want to bring up the menu, is passed all of the settings preferences
     public void mainMenu(ColourScheme scheme, boolean isHard, boolean isSound, Theme selectedTheme) throws Exception {
+        
         //assigns the given parameters to variables
         selectedColourScheme = scheme;
         hardMode = isHard;
@@ -78,13 +67,14 @@ public class Menu {
             createMenu();
         }
 
-        //applies menu changes (if any)
+        //applies menu changes (if any) using applyTheme method
         applyTheme();
 
         //makes menu visible
         menu.setVisible(true);
     }
 
+    //if the menu instance doesn't exist it will be created
     private void createMenu(){
         //sets custom taskbar icon
         ImageIcon img = new ImageIcon("src/Images/icon.png");
@@ -223,6 +213,7 @@ public class Menu {
             public void actionPerformed(ActionEvent e){
                 Settings runSettings = new Settings(Menu.this);
                 runSettings.runSettings(selectedColourScheme, hardMode, soundToggle, filePath, isMusicPlaying, theme);
+                //make menu go bye bye, but we still want music so dont dispose
                 menu.setVisible(false);
             }
         });
@@ -241,7 +232,7 @@ public class Menu {
     //plays background music if sound is enabled
     public void playBackgroundMusic() {
         try {
-            //if sound is meant to be on, this will 
+            //if sound is meant to be on, this will be true
             if (soundToggle) {
                 // creates a file object for the audio file and gets an audio input stream from it
                 File audioFile = new File(theme.song);
@@ -278,7 +269,7 @@ public class Menu {
 
     //method that changes the colours of the menu as well as the images based on the selected theme
     public void applyTheme() {
-
+    //basically redefine all the colours based on which theme is passed
         menu.getContentPane().setBackground(Color.decode(theme.background));
 
         ImageIcon imageIcon = new ImageIcon(theme.banner);
@@ -318,7 +309,7 @@ public class Menu {
                         return Integer.compare(score2, score1);
                     });
 
-                    //builds an html string to display scores
+                    //builds a string to display scores
                     StringBuilder buildScore = new StringBuilder("<html>");
                     int rank = 1;
                     for (String score : scores) {
@@ -352,6 +343,7 @@ public class Menu {
             return "nd";
         } else if (rank % 10 == 3 && rank % 100 != 13) {
             return "rd";
+        //this will never happen cause it stores top three at any given time, but we might want to switch it to top 5 later so keep it for now
         } else {
             return "th";
         }

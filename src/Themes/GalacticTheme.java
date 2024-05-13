@@ -1,5 +1,7 @@
 package Themes;
 
+//check the abstract class that this extends (Theme) for commenting
+
 public class GalacticTheme extends Theme{
     public GalacticTheme() {
         themeName = "Galactic";
