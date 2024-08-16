@@ -1,8 +1,5 @@
 # RAMgame
 Really Awesome Memory (game)!!!!!!
-## RAMgame
-
-a Really Awesome Memory game!
 
 ### key elements
 
